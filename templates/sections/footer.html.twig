@@ -1,0 +1,59 @@
+<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+    <div class="container py-5">
+        <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(247, 92, 125, 0.5) ;">
+            <div class="row g-4">
+                <div class="col-lg-3">
+                    <a href="#">
+                        <h1 class="text-white mb-0">NoTicket</h1>
+                        <p class="text-secondary mb-0">Reliable Event Booking</p>
+                    </a>
+                </div>
+                <div class="col-lg-9">
+                    <div class="d-flex justify-content-end pt-3">
+                        <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle"
+                           href="https://www.facebook.com/insat.rnu.tn"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn btn-outline-secondary btn-md-square rounded-circle"
+                           href="https://www.linkedin.com/school/national-institute-of-applied-science-and-technology/"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row g-5">
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-item">
+                    <h4 class="text-light mb-3">Why People Like us!</h4>
+                    <p class="mb-4">
+                        Customers love us for our user-friendly booking, diverse event options, fair pricing, and
+                        dedicated customer service. Experience the difference!
+                    </p>
+                </div>
+            </div>
+            {% set colLength = app.user is defined ? 3 : 6 %}
+            <div class="col-lg-{{ colLength }} col-md-6">
+                <div class="d-flex flex-column text-start footer-item">
+                    <h4 class="text-light mb-3">Info</h4>
+                    <a class="btn-link" href="#">Contact Us</a>
+                </div>
+            </div>
+            {% if app.user %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex flex-column text-start footer-item">
+                        <h4 class="text-light mb-3">Account</h4>
+                        <a class="btn-link" href="#">My Account</a>
+                        {% if app.session.get('role') is defined and app.session.get('role') == 'customer' %}
+                            <a class="btn-link" href="#">Order History</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="col-lg-3 col-md-6">
+                <div class="footer-item">
+                    <h4 class="text-light mb-3">Contact</h4>
+                    <p>Address: 676 Centre Urbain Nord BP, Tunis 1080</p>
+                    <p>Email: NoTicket@gmail.com</p>
+                    <p>Phone: (+216) 77 777 777</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="container-fluid fixed-top" id="navbar-container">
+    <div class="container topbar bg-primary d-none d-lg-block">
+        <div class="d-flex justify-content-between">
+            <div class="top-info ps-2">
+                <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#"
+                                                                                                 class="text-white">Centre Urbain, Tunisie</a></small>
+                <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#"
+                                                                                          class="text-white">NoTicket@gmail.com</a></small>
+            </div>
+        </div>
+    </div>
+    <div class="container px-0">
+        <nav class="navbar navbar-light bg-white navbar-expand-xl">
+            <a href="#" class="navbar-brand">
+                <h1 class="text-primary display-6">NoTicket</h1>
+            </a>
+            <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars text-primary"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                <a href="#" class="nav-item nav-link">Home</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
+                {% if app.user and app.user.role == "customer" %}
+                    <a href="#" class="nav-item nav-link">Manage Tickets</a>
+                {% elseif app.user and app.user.role == "admin" %}
+                    <a href="#" class="nav-item nav-link">Dashboard</a>
+                    <a href="#" class="nav-item nav-link">Customer Support</a>
+                {% endif %}
+                <form id="currencyForm" method="post" action="#" class="me-3 d-inline-block">
+                    <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
+                        {% if not app.session.get('currency') %}
+                            {% set defaultCurrency = 'USD' %}
+                            {% set _ = app.session.set('currency', defaultCurrency) %}
+                        {% endif %}
+                        <option value="USD" {% if app.session.get('currency') == 'USD' %} selected{% endif %}>USD ($)</option>
+                        <option value="EUR" {% if app.session.get('currency') == 'EUR' %} selected{% endif %}>Euro (€)</option>
+                        <option value="GBP" {% if app.session.get('currency') == 'GBP' %} selected{% endif %}>Pound (£)</option>
+                    </select>
+                </form>
+            </div>
+            <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
+                {% if not app.user %}
+                    <a href="#" class="btn btn-primary text-white me-2">Login</a>
+                    <a href="#" class="btn btn-primary text-white me-2">Signup</a>
+                {% else %}
+                    <a href="#" class="btn btn-danger me-2">Logout</a>
+                {% endif %}
+                <a href="#" class="my-auto d-flex flex-column align-items-center">
+                    <i class="fas fa-user fa-2x"></i>
+                    <span>Profile</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+</div>
+<script>
+    function submitCurrencyForm(event){
+        event.preventDefault();
+        document.querySelector('#currencyForm').submit();
+    }
+</script>
