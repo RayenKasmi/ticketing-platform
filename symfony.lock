@@ -122,6 +122,15 @@
             "./config/packages/mailer.yaml"
         ]
     },
+    "symfony/mailer-send-mailer": {
+        "version": "6.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "a8120b79052d6ced86bae5025fd7b9e203fdccf8"
+        }
+    },
     "symfony/maker-bundle": {
         "version": "1.58",
         "recipe": {
@@ -275,6 +284,9 @@
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
         ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.0"
     },
     "twig/extra-bundle": {
         "version": "v3.9.3"
