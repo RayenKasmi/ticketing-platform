@@ -17,18 +17,46 @@
 
                         {{ form_start(registrationForm) }}
                         <div class="form-group">
+                            {% if registrationForm.firstname.vars.errors|length > 0 %}
+                                <p class="text-danger">
+                                    {% for error in registrationForm.firstname.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
                             {{ form_label(registrationForm.firstname, 'First Name', {'label_attr': {'class': 'font-weight-bold'}}) }}
                             {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
+                            {% if registrationForm.lastname.vars.errors|length > 0 %}
+                                <p class="text-danger">
+                                    {% for error in registrationForm.lastname.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
                             {{ form_label(registrationForm.lastname, 'Last Name', {'label_attr': {'class': 'font-weight-bold'}}) }}
                             {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
+                            {% if registrationForm.email.vars.errors|length > 0 %}
+                                <p class="text-danger">
+                                    {% for error in registrationForm.email.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
                             {{ form_label(registrationForm.email, 'Email', {'label_attr': {'class': 'font-weight-bold'}}) }}
                             {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
                         </div>
                         <div class="form-group">
+                            {% if registrationForm.plainPassword.vars.errors|length > 0 %}
+                                <p class="text-danger">
+                                    {% for error in registrationForm.plainPassword.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
                             {{ form_label(registrationForm.plainPassword, 'Password', {'label_attr': {'class': 'font-weight-bold'}}) }}
                             {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control'}, 'label': 'Password'}) }}
                         </div>

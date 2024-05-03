@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -21,11 +22,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[
+        ORM\Column(length: 255),
+    ]
     private ?string $firstname;
-    #[ORM\Column(length: 255)]
+    #[
+        ORM\Column(length: 255),
+    ]
     private ?string $lastname;
-    #[ORM\Column(length: 180)]
+
+
+    #[
+        ORM\Column(length: 180),
+    ]
     private ?string $email = null;
 
     /**
