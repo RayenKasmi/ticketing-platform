@@ -11,7 +11,7 @@
     </div>
     <div class="container px-0">
         <nav class="navbar navbar-light bg-white navbar-expand-xl">
-            <a href="#" class="navbar-brand">
+            <a href="/home" class="navbar-brand">
                 <h1 class="text-primary display-6">NoTicket</h1>
             </a>
             <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
@@ -20,7 +20,7 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                <a href="#" class="nav-item nav-link">Home</a>
+                <a href="/home" class="nav-item nav-link">Home</a>
                 <a href="#" class="nav-item nav-link">Contact</a>
                 {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
@@ -42,10 +42,10 @@
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
                 {% if not app.user %}
-                    <a href="#" class="btn btn-primary text-white me-2">Login</a>
-                    <a href="#" class="btn btn-primary text-white me-2">Signup</a>
+                    <a href="/login" class="btn btn-primary text-white me-2">Login</a>
+                    <a href="/register" class="btn btn-primary text-white me-2">Signup</a>
                 {% else %}
-                    <a href="#" class="btn btn-danger me-2">Logout</a>
+                    <a href="/logout" class="btn btn-danger me-2">Logout</a>
                 {% endif %}
                 <a href="#" class="my-auto d-flex flex-column align-items-center">
                     <i class="fas fa-user fa-2x"></i>
