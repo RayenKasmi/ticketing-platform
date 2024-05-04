@@ -47,10 +47,12 @@
                 {% else %}
                     <a href="/logout" class="btn btn-danger me-2">Logout</a>
                 {% endif %}
-                <a href="#" class="my-auto d-flex flex-column align-items-center">
-                    <i class="fas fa-user fa-2x"></i>
-                    <span>Profile</span>
-                </a>
+                {% if app.user %}
+                    <a href="/profile" class="my-auto d-flex flex-column align-items-center">
+                        <i class="fas fa-user fa-2x"></i>
+                        <span>Profile</span>
+                    </a>
+                {% endif %}
             </div>
         </nav>
     </div>
