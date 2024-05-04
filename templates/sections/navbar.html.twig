@@ -26,7 +26,7 @@
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
                 {% elseif app.user and 'ROLE_ADMIN' in app.user.roles %}
                     <a href="#" class="nav-item nav-link">Dashboard</a>
-                    <a href="#" class="nav-item nav-link">Customer Support</a>
+                    <a href="/customer-support" class="nav-item nav-link">Customer Support</a>
                 {% endif %}
                 <form id="currencyForm" method="post" action="#" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
