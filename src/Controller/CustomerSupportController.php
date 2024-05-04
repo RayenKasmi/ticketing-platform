@@ -10,10 +10,9 @@ use App\Repository\FormSubmissionsRepository;
 
 class CustomerSupportController extends AbstractController
 {
-    #[Route('/customer-support', name: 'customer_support')]
+    #[Route('/customer-support', name: 'customer_support', methods: ['GET'])]
     public function index(FormSubmissionsRepository $formSubmissionRepository, Request $request): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $maxPerPage = 10;
         $totalPages = $formSubmissionRepository->totalPages($maxPerPage);

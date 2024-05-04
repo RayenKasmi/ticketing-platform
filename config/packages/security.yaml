@@ -44,6 +44,8 @@ security:
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/customer-support, roles: ROLE_ADMIN }
+        - { path: ^/deleteSubmission, roles: ROLE_ADMIN}
         - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

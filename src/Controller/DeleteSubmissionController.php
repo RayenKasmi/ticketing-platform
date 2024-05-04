@@ -10,12 +10,11 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DeleteSubmissionController extends AbstractController
 {
-    #[Route('/deleteSubmission', name: 'app_delete_submission')]
+    #[Route('/deleteSubmission', name: 'app_delete_submission', methods: ['GET'])]
     public function handleDeletion(FormSubmissionsRepository $formSubmissionRepository, Request $request): Response
     {
-        /*$this->denyAccessUnlessGranted('ROLE_ADMIN');*/
 
-        if ($request->getMethod() === 'GET' && $request->query->has('id')) {
+        if ($request->query->has('id')) {
             $submissionId = $request->query->get('id');
 
             // Check if the submissionId is a single id or multiple ids
