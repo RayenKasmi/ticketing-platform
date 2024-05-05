@@ -13,4 +13,33 @@
         </div>
     </div>
 </div>
+
+    {% set upcomingEvents = [] %}
+    {% for event in events %}
+        {% if event.startSellTime|date('U') > "now"|date('U') %}
+            {% set upcomingEvents = upcomingEvents|merge([event]) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if upcomingEvents|length > 0 %}
+        {% include 'home/eventSection.html.twig' %}
+    {% endif %}
+
+    {% for category in categories %}
+        {% set currentEvents = [] %}
+        {% if eventsByCategory[category.name] is defined %}
+            {% for event in eventsByCategory[category.name] %}
+                {% if event.startSellTime|date('U') <= "now"|date('U') and event.eventDate|date('U') >= "now"|date('U') %}
+                    {% set currentEvents = currentEvents|merge([event]) %}
+                {% endif %}
+            {% endfor %}
+            {% if currentEvents|length > 0 %}
+                {% include 'home/eventCarousel.html.twig' %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+
+{% include 'home/facts.php' %}
+{% include 'home/devs.html.twig' %}
+
 {% endblock %}
