@@ -21,6 +21,16 @@ class EventReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, EventReservation::class);
     }
 
+    public function findExpiredEventReservations(): array
+    {
+        return $this->createQueryBuilder('er')
+            ->where('er.is_expired = :expired')
+            ->andWhere('er.expiration < :now')
+            ->setParameter('expired', false)
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return EventReservation[] Returns an array of EventReservation objects
 //     */
