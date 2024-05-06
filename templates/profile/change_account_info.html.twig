@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Profile{% endblock %}
+
+{% block body %}
+    <div class="container" id="profileContainer">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <nav class="nav">
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-profileInfo-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-profileInfo" type="button" role="tab" aria-controls="nav-profileInfo"
+                                aria-selected="true">Profile
+                        </button>
+                    </div>
+                </nav>
+                <div class="tab-content py-3" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-profileInfo" role="tabpanel"
+                         aria-labelledby="nav-profileInfo-tab">
+                        {{ form_start(changeAccountInfoForm) }}
+                        <div class="form-group row">
+                            <label for="firstname" class="col-sm-3 col-form-label font-weight-bold">First Name</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(changeAccountInfoForm.firstname, {'attr': {'class': 'form-control', 'value': app.user.firstname}}) }}
+                                {% if changeAccountInfoForm.firstname.vars.errors|length > 0 %}
+                                    <p class="text-danger">
+                                        {% for error in changeAccountInfoForm.firstname.vars.errors %}
+                                            {{ error.message }}
+                                        {% endfor %}
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div style="margin-top: 2vh;"></div>
+                        <div class="form-group row">
+                            <label for="lastname" class="col-sm-3 col-form-label font-weight-bold">Last Name</label>
+                            <div class="col-sm-9">
+                                {{ form_widget(changeAccountInfoForm.lastname, {'attr': {'class': 'form-control', 'value':app.user.lastname}}) }}
+                            </div>
+                            {% if changeAccountInfoForm.lastname.vars.errors|length > 0 %}
+                                <p class="text-danger">
+                                    {% for error in changeAccountInfoForm.lastname.vars.errors %}
+                                        {{ error.message }}
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div style="margin-top: 2vh;"></div>
+                        <button type="submit" name="ChangeName" class="btn btn-primary" style="color: white;">Submit</button>
+                        {{ form_end(changeAccountInfoForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

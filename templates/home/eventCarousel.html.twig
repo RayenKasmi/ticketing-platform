@@ -1,0 +1,40 @@
+<div class="container-fluid vesitable py-5">
+    <div class="container py-5">
+        <h1 class="mb-0">
+            {{ category.name }}
+        </h1>
+        <div class="owl-carousel vegetable-carousel justify-content-center">
+            {% set categoryCurrentEvents = eventsByCategory[category.name]|filter(event => event.startSellTime|date('U') <= "now"|date('U') and event.eventDate|date('U') >= "now"|date('U')) %}
+            {% for event in categoryCurrentEvents %}
+                <div class="border border-primary rounded position-relative event-item">
+                    <div class="event-img">
+                        <img src="{{ event.imagePath }}" class="img-fluid w-100 rounded-top" alt="">
+                    </div>
+                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;">
+                        {{ event.category.name }}
+                    </div>
+                    <div class="p-4 rounded-bottom">
+                        <h4>
+                            {{ event.name }}
+                        </h4>
+                        <p class="text-dark fs-6 fw-bold mb-2">
+                            {{ event.eventDate|date('Y-m-d') }}
+                        </p>
+                        <p>
+                            {{ event.shortDescription }}
+                        </p>
+                        <div class="d-flex justify-content-between flex-lg-wrap">
+                            <p class="text-dark fs-5 fw-bold mb-0">
+                                {% set currencySymbol = '$' %}
+                                {{ currencySymbol ~ (event.ticketPrice / 100) }}
+                            </p>
+                            <a href="/event/{{ event.id }}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                <i class="fa fa-eye me-2 text-primary"></i> View Event
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
