@@ -12,7 +12,7 @@
         <div class="container py-5">
             <div class="p-5 bg-light rounded">
                 <div class="row g-4">
-                    {% if app.flashes('success')|length == 0 %}
+                    {% if app.flashes('error')|length == 0 %}
                         {% for flash_success in app.flashes('success') %}
                             <div class="alert alert-success">
                                 {{ flash_success }}

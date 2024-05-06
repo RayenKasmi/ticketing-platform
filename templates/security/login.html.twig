@@ -12,7 +12,11 @@
                         {% if error %}
                             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                         {% endif %}
-
+                        {% for flash_success in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ flash_success }}
+                            </div>
+                        {% endfor %}
                         <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
                         <form method="post">
                             <div class = "form-group">
