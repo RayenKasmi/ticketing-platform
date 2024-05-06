@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ContactFormType extends AbstractType
@@ -22,7 +23,16 @@ class ContactFormType extends AbstractType
                 'constraints' => [ new NotBlank(['message' => 'Please enter your first name'])]
             ])
             ->add('message', TextareaType::class, [
-                'constraints' => [ new NotBlank(['message' => 'Please enter your first name'])]
+                'constraints' => [ new NotBlank(['message' => 'Please enter your first name']),
+                    new Length([
+                        'min' => 4,
+                        'minMessage' => 'Your message should be at least {{ limit }} characters',
+                        // max length allowed by Symfony for security reasons
+                        'max' => 4096,
+                        'maxMessage' => 'Your message should be at most {{ limit }} characters',
+                    ]),
+                    ],
+                'attr' => ['rows' => 5]
             ])
         ;
     }

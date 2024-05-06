@@ -11,11 +11,19 @@
     <div class="container-fluid contact py-5">
         <div class="container py-5">
             <div class="p-5 bg-light rounded">
-                {% for flash_error in app.flashes('error') %}
-                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-                {% endfor %}
                 <div class="row g-4">
-
+                    {% if app.flashes('success')|length == 0 %}
+                        {% for flash_success in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ flash_success }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for flash_error in app.flashes('error') %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ flash_error }}
+                        </div>
+                    {% endfor %}
                     <div class="col-lg-7">
                         {{ form_start(ContactForm) }}
                         {{ form_label(ContactForm.name, 'Name', {'label_attr': {'class': 'font-weight-bold'}}) }}
