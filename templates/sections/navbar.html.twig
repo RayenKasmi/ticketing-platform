@@ -20,13 +20,13 @@
             </button>
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
-                <a href="{{ path('app_home') }}" class="nav-item nav-link">Home</a>
-                <a href="{{ path('app_contact_form') }}" class="nav-item nav-link">Contact</a>
+                <a href="/home" class="nav-item nav-link">Home</a>
+                <a href="#" class="nav-item nav-link">Contact</a>
                 {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
                     <a href="#" class="nav-item nav-link">Manage Tickets</a>
                 {% elseif app.user and 'ROLE_ADMIN' in app.user.roles %}
                     <a href="#" class="nav-item nav-link">Dashboard</a>
-                    <a href="{{ path('customer_support') }}" class="nav-item nav-link">Customer Support</a>
+                    <a href="/customer-support" class="nav-item nav-link">Customer Support</a>
                 {% endif %}
                 <form id="currencyForm" method="post" action="#" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
@@ -42,8 +42,8 @@
             </div>
             <div class="collapse navbar-collapse bg-white justify-content-end" id="navbarCollapse">
                 {% if not app.user %}
-                    <a href="{{ path('app_login') }}" class="btn btn-primary text-white me-2">Login</a>
-                    <a href="{{ path('app_register') }}" class="btn btn-primary text-white me-2">Signup</a>
+                    <a href="/login" class="btn btn-primary text-white me-2">Login</a>
+                    <a href="/register" class="btn btn-primary text-white me-2">Signup</a>
                 {% else %}
                     <a href="/logout" class="btn btn-danger me-2">Logout</a>
                 {% endif %}
