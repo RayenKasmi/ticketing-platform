@@ -45,8 +45,8 @@
                                 {% if canBuyTickets %}
                                     {{ form_start(form, {'attr': {'action': path('app_event_reservation', {'id': event.id})}}) }}
 
-                                    {{                              <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: {{ event.availabl form_row(form.quantity) }}
-      eTickets }}</p>
+                                    {{ form_row(form.quantity) }}
+                                    <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: {{ event.availableTickets }}</p>
 
                                     {{ form_row(form.submit) }}
 
