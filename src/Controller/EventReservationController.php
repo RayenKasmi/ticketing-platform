@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\EventReservation;
 use App\Entity\Events;
-use App\Entity\User;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\EventReservationType;
@@ -81,6 +79,7 @@ class EventReservationController extends AbstractController
         $eventReservation = $reservationRepository->findOneBy([
             'user' => $userId,
             'event' => $event,
+            'is_expired' => false
         ]);
 
         if ($eventReservation) {
