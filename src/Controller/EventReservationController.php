@@ -33,9 +33,8 @@ class EventReservationController extends AbstractController
     }
 
     #[Route('/reserve/{id}', name: 'app_event_reservation', methods: ['POST'])]
-    public function makeEventReservation(Request $request, SessionInterface $session, Events $event=null): Response
+    public function makeEventReservation(Request $request, Events $event=null): Response
     {
-
         if (!$event) {
             return new Response('The event does not exist', Response::HTTP_NOT_FOUND);
         }
@@ -110,7 +109,37 @@ class EventReservationController extends AbstractController
             return new RedirectResponse($refererUrl);
         }
 
+        $this->addFlash('success', 'Event reservation created successfully.');
         return $this->redirectToRoute('app_home');
-
     }
+
+    #[Route('/cancel-reservation/{id}', name: 'app_cancel_event_reservation',  methods: ['POST'])]
+    public function cancelEventReservation(Request $request, EventReservation $eventReservation=null): Response
+    {
+        if (!$eventReservation || $eventReservation->isExpired()) {
+            return new Response('The event reservation does not exist or is already expired', Response::HTTP_NOT_FOUND);
+        }
+
+        $loggedInUser = $this->getUser();
+        if (!$loggedInUser || $eventReservation->getUser() !== $loggedInUser) {
+            return new Response('Unauthorized', Response::HTTP_UNAUTHORIZED);
+        }
+
+        $refererUrl = $request->headers->get('referer');
+        $event = $eventReservation->getEvent();
+        $quantity = $eventReservation->getQuantity();
+
+        $event->setAvailableTickets($event->getAvailableTickets() + $quantity);
+
+        $eventReservation->setExpired(true);
+
+        $this->entityManager->persist($event);
+        $this->entityManager->persist($eventReservation);
+
+        $this->entityManager->flush();
+
+        $this->addFlash('success', 'Event reservation cancelled successfully.');
+        return new RedirectResponse($refererUrl);
+    }
+
 }
