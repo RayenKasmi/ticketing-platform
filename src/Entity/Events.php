@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\EventsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventsRepository::class)]
 class Events
@@ -39,6 +40,8 @@ class Events
     private ?\DateTimeInterface $startSellTime = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'startSellTime')]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $eventDate = null;
 
     #[ORM\Column]

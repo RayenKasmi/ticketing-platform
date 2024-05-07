@@ -59,9 +59,9 @@ class EventsController extends AbstractController
             }
 
             if($new) {
-                $message = " a été ajouté avec succès";
+                $message = "Event added successfully";
             } else {
-                $message = " a été mis à jour avec succès";
+                $message = "Event updated successfully";
             }
 
             $manager = $doctrine->getManager();
@@ -82,7 +82,7 @@ class EventsController extends AbstractController
         $manager = $doctrine->getManager();
         $manager->remove($event);
         $manager->flush();
-        $this->addFlash('success', ' a été supprimé avec succès');
+        $this->addFlash('success', 'Event deleted successfully');
         return $this->redirectToRoute('events');
     }
 }

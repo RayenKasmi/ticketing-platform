@@ -11,6 +11,25 @@
 <div class="events-wrapper">
     <div class="container-fluid py-5" style="margin-top: 20vh">
         <h2>All Events</h2>
+        <br>
+        <br>
+        <div class = "card-body">
+            {% for message in app.session.flashBag.get('info') %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.session.flashBag.get('success') %}
+                <div class="alert alert-success">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            {% for message in app.session.flashBag.get('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
         <a class="btn btn-primary text-white" href="{{ path("edit_event") }}" role="button">Add Event</a>
         <br>
             <div class="row d-flex justify-content-center">

@@ -13,27 +13,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class EventsFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class,[
-                'constraints' => [new NotBlank(['message' => 'Field must not be empty'])]
-            ])
-            ->add('venue', TextType::class,[
-                'constraints' => [new NotBlank(['message' => 'Field must not be empty'])]
-            ])
-            ->add('shortDescription', TextType::class,[
-                'constraints' => [new NotBlank(['message' => 'Field must not be empty'])]
-            ])
-            ->add('longDescription', TextType::class,[
-                'constraints' => [new NotBlank(['message' => 'Field must not be empty'])]
-            ])
-            ->add('organizer', TextType::class,[
-                'constraints' => [new NotBlank(['message' => 'Field must not be empty'])]
-            ])
+            ->add('name', TextType::class)
+            ->add('venue', TextType::class)
+            ->add('shortDescription', TextType::class)
+            ->add('longDescription', TextType::class)
+            ->add('organizer', TextType::class)
             ->add('totalTickets')
             ->add('availableTickets')
             ->add('startSellTime', null, [
