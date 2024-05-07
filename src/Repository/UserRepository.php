@@ -38,6 +38,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
+    public function totalPages($x=10):int
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->select('COUNT(u.id)')
+            ->setMaxResults(1);
+        $count = $qb->getQuery()->getSingleScalarResult();
+        var_dump($count); // Check the value of $count
+        return  ceil($count / $x);
+    }
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */
