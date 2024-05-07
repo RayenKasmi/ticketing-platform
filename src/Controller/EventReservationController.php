@@ -64,6 +64,14 @@ class EventReservationController extends AbstractController
             return new RedirectResponse($refererUrl);
         }
 
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        if (!$user->isVerified()) {
+            $this->addFlash('error', 'Your account is not verified.');
+            return new RedirectResponse($refererUrl);
+        }
+
         $requestedQuantity = $form->getData()->getQuantity();
 
         if ($requestedQuantity > $event->getAvailableTickets()) {
@@ -71,8 +79,7 @@ class EventReservationController extends AbstractController
             return new RedirectResponse($refererUrl);
         }
 
-        $user = $this->getUser();
-        $userId = $user->getId();
+
         $reservationRepository = $this->entityManager->getRepository(EventReservation::class);
 
         $eventReservation = $reservationRepository->findOneBy([
@@ -90,6 +97,7 @@ class EventReservationController extends AbstractController
         $this->entityManager->beginTransaction();
         try {
             $event->setAvailableTickets($event->getAvailableTickets() - $requestedQuantity);
+            $this->entityManager->persist($event);
 
             $eventReservation = new EventReservation();
             $eventReservation->setEvent($event);
@@ -109,8 +117,7 @@ class EventReservationController extends AbstractController
             return new RedirectResponse($refererUrl);
         }
 
-        $this->addFlash('success', 'Event reservation created successfully.');
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_payment', ['id' => $eventReservation->getId()]);
     }
 
     #[Route('/cancel-reservation/{id}', name: 'app_cancel_event_reservation',  methods: ['POST'])]
@@ -138,8 +145,7 @@ class EventReservationController extends AbstractController
 
         $this->entityManager->flush();
 
-        $this->addFlash('success', 'Event reservation cancelled successfully.');
-        return new RedirectResponse($refererUrl);
+        return $this->redirectToRoute('home');
     }
 
 }

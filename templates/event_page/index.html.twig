@@ -3,8 +3,8 @@
 {% block title %} {{ event.name }} {% endblock %}
 
 {% block body %}
-    <br>
-    <br>
+    <div style="margin-top: 20vh;"></div>
+
     <div class="container-fluid py-5 mt-5">
         <div class="container py-5">
             <div class="row g-4 mb-5">
@@ -49,6 +49,9 @@
                                     <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: {{ event.availableTickets }}</p>
 
                                     {{ form_row(form.submit) }}
+                                    {% for flash_error in app.flashes('error') %}
+                                        <p class="text-danger">{{ flash_error }}</p>
+                                    {% endfor %}
 
                                     {{ form_end(form) }}
                                 {% else %}

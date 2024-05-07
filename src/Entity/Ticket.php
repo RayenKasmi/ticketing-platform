@@ -104,7 +104,7 @@ class Ticket
         return $this->purchase_date;
     }
 
-    public function setPurchaseDate(string $purchase_date): static
+    public function setPurchaseDate(\DateTimeInterface $purchase_date): static
     {
         $this->purchase_date = $purchase_date;
 
