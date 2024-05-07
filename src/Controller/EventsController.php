@@ -11,13 +11,16 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-#[Route('/events')]
+#[IsGranted('ROLE_USER')]
+#[Route('dashboard/events')]
 class EventsController extends AbstractController
 {
     #[Route('/', name: 'events')]
     public function index(ManagerRegistry $doctrine, Request $request): Response {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $repository = $doctrine->getRepository(Events::class);
         $events = $repository->findAll();
         return $this->render('events/index.html.twig', ['events' => $events]);
@@ -26,6 +29,7 @@ class EventsController extends AbstractController
     #[Route('/edit/{id?0}', name: 'edit_event')]
     public function edit(Events $event = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $new = false;
         if (!$event) {
             $new = true;
@@ -76,9 +80,11 @@ class EventsController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_USER')]
     #[Route('/delete/{id}', name: 'delete_event')]
     public function delete(Events $event, ManagerRegistry $doctrine): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $manager = $doctrine->getManager();
         $manager->remove($event);
         $manager->flush();
