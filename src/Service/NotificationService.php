@@ -21,7 +21,15 @@ class NotificationService
     {
         return $this->notificationRepository->findBy(['user' => $user]);
     }
-
+    public function getNotificationsByPage($currentPage,$user,$maxPerPage=10): array
+    {
+        $offset = ($currentPage - 1) * $maxPerPage;
+        return $this->notificationRepository->findBy(['user' => $user], null, $maxPerPage, $offset);
+    }
+    public function getTotalPages($userId,$maxPerPage=10): int
+    {
+        return ceil($this->notificationRepository->numberOfNotificationsByUserId($userId)/$maxPerPage);
+    }
     public function markNotificationAsRead($id): void
     {
         $notification = $this->notificationRepository->find($id);

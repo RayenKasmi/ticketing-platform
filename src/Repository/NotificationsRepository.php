@@ -20,6 +20,24 @@ class NotificationsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notifications::class);
     }
+    public function deleteByUserId($userId): void
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->delete()
+            ->where('n.user = :userId')
+            ->setParameter('userId', $userId);
+
+        $qb->getQuery()->execute();
+    }
+    public function numberOfNotificationsByUserId($userId): int
+    {
+        $qb = $this->createQueryBuilder('n')
+            ->select('COUNT(n.id)')
+            ->where('n.user = :userId')
+            ->setParameter('userId', $userId);
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
 
 //    /**
 //     * @return Notifications[] Returns an array of Notifications objects
