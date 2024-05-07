@@ -31,20 +31,24 @@ class Events
     private ?string $organizer = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(0)]
     private ?int $totalTickets = null;
 
     #[ORM\Column]
+    #[Assert\LessThanOrEqual(propertyPath: 'totalTickets')]
+    #[Assert\GreaterThan(0)]
     private ?int $availableTickets = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $startSellTime = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\GreaterThan(propertyPath: 'startSellTime')]
-    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $eventDate = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(0)]
     private ?int $ticketPrice = null;
 
     #[ORM\Column(length: 255)]

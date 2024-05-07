@@ -1,17 +1,153 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EventsController!{% endblock %}
+{% block title %}Add/Edit Event{% endblock %}
 
 {% block body %}
-    <style>
-        .events-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top: 200px}
-        .events-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-    </style>
-
-    <div class="events-wrapper">
-        {{form_start(form)}}
-            {{ form_errors(form) }}
-            {{ form_widget(form) }}
-        {{ form_end(form) }};
+    <div class="container-fluid page-header py-5" style="background-color:#293049">
+        <h1 class="text-center text-white display-6">Add new Event</h1>
     </div>
+<div class="container-fluid contact py-3">
+    <div class="container py-5">
+        <div class="row g-4 d-flex justify-content-center">
+            <div class="col-lg-7">
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.name, 'Name', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.name.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.name.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.venue, 'Venue', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.venue, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.venue.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.venue.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.shortDescription, 'Short Description', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.shortDescription, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.shortDescription.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.shortDescription.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.longDescription, 'Long Description', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.longDescription, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.longDescription.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.longDescription.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.organizer, 'Organizer', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.organizer, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.organizer.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.organizer.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.totalTickets, 'Total Tickets', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.totalTickets, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.totalTickets.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.totalTickets.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.availableTickets, 'Available Tickets', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.availableTickets, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.availableTickets.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.availableTickets.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.startSellTime, 'Start Sell Time', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.startSellTime, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.startSellTime.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.startSellTime.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.eventDate, 'Event Date', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.eventDate, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.eventDate.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.eventDate.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.ticketPrice, 'Ticket Price', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.ticketPrice, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.ticketPrice.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.ticketPrice.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.category, 'Category', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.ticketPrice.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.category.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.imagePath, 'Image Path', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(form.imagePath, {'attr': {'class': 'form-control'}}) }}
+                        {% if form.ticketPrice.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in form.imagePath.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    <div style="margin-top: 1vh;"></div>
+                    <button type="submit" class="btn btn-secondary btn-block">Submit</button>
+                    {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
