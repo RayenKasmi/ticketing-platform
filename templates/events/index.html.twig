@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EventsController!{% endblock %}
+
+{% block body %}
+<style>
+    .events-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top: 200px }
+    .events-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="events-wrapper">
+    <div class="container-fluid py-5" style="margin-top: 20vh">
+        <h2>All Events</h2>
+        <a class="btn btn-primary text-white" href="{{ path("edit_event") }}" role="button">Add Event</a>
+        <br>
+            <div class="row d-flex justify-content-center">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Venue</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Short Description</th>
+                        <th scope="col">Long Description</th>
+                        <th scope="col">Organizer</th>
+                        <th scope="col">Start Sell Time</th>
+                        <th scope="col">Total Tickets</th>
+                        <th scope="col">Available Tickets</th>
+                        <th scope="col">Ticket Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for e in events %}
+                        <tr>
+                            <td>{{ e.id }}</td>
+                            <td>{{ e.name }}</td>
+                            <td>{{ e.venue }}</td>
+                            <td>{{ e.category}}</td>
+                            <td>{{ e.eventDate | date('d-m-Y') }}</td>
+                            <td>{{ e.shortDescription }}</td>
+                            <td>
+                                <a href="#" data-toggle="tooltip" data-title="{{ e.longDescription }}">See Details</a>
+                            </td>
+                            <td>{{ e.organizer }}</td>
+                            <td>{{ e.startSellTime | date('d-m-Y') }}</td>
+                            <td>{{ e.totalTickets }}</td>
+                            <td>{{ e.availableTickets }}</td>
+                            <td>{{ e.ticketPrice }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Edit and Delete buttons">
+                                    <a class="btn btn-primary btn-sm text-white" href="{{ path("edit_event", { id: e.id }) }}" role="button">Edit</a>
+                                    <a href="{{ path("delete_event", { id: e.id }) }}" class="btn btn-danger btn-sm text-white" onclick="return confirm('Are you sure to delete this event?')">Delete</a>
+                                    <a href="{{ path("app_event_page", {id: e.id}) }}" class="btn btn-primary btn-sm">
+                                        <i class="fa fa-eye me-1 text-white"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    </div>
+</div>
+
+    <style>
+        [data-title]:hover:after {
+            opacity: 1;
+            transition: all 0.1s ease 0.5s;
+            visibility: visible;
+        }
+        [data-title]:after {
+            content: attr(data-title);
+            background-color: #FFFFFF;
+            color: #111;
+            font-size: 80%;
+            position: absolute;
+            padding: 5px;
+            border-radius: 5px;
+            bottom: -1.6em;
+            left: 100%;
+            white-space: nowrap;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            z-index: 99999;
+            visibility: hidden;
+        }
+        [data-title] {
+            position: relative;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
+            });
+        });
+    </script>
+
+{% endblock %}
