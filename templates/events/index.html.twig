@@ -63,6 +63,7 @@
                                     <td>{{ e.shortDescription }}</td>
                                     <td>
                                         <a href="#" data-toggle="tooltip" data-title="{{ e.longDescription }}">See Details</a>
+
                                     </td>
                                     <td>{{ e.organizer }}</td>
                                     <td>{{ e.startSellTime | date('d-m-Y') }}</td>
@@ -108,4 +109,42 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
+            });
+        });
+    </script>
+
+    <style>
+        [data-title]:hover:after {
+            opacity: 1;
+            transition: all 0.1s ease 0.5s;
+            visibility: visible;
+        }
+        [data-title]:after {
+            content: attr(data-title);
+            background-color: #FFFFFF;
+            color: #111;
+            font-size: 80%;
+            position: absolute;
+            padding: 5px;
+            border-radius: 5px;
+            bottom: -1.6em;
+            left: 100%;
+            white-space: nowrap;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            z-index: 99999;
+            visibility: hidden;
+        }
+        [data-title] {
+            position: relative;
+        }
+
+
+
+    </style>
 {% endblock %}

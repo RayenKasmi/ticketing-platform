@@ -54,7 +54,7 @@ class EventsFormType extends AbstractType
                 ],
                 'required' => false,
             ])
-            ->add('startSellTime', DateTimeType::class, [
+            ->add('startSellTime', DateType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter the start sell time']),
                 ],
