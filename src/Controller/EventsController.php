@@ -20,6 +20,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class EventsController extends AbstractController
 {
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{page<\d+>?1}', name: 'events')]
     public function index(EventsRepository $eventsRepository, $page): Response
     {
@@ -33,6 +34,7 @@ class EventsController extends AbstractController
             'currentPage' => $page,
         ]);
     }
+
     /*#[Route('/', name: 'events')]
     public function index(ManagerRegistry $doctrine, Request $request): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
@@ -41,10 +43,10 @@ class EventsController extends AbstractController
         return $this->render('events/index.html.twig', ['events' => $events]);
     }*/
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/edit/{id?0}', name: 'edit_event')]
     public function edit(Events $event = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $new = false;
         if (!$event) {
             $new = true;
@@ -95,11 +97,10 @@ class EventsController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_USER')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/delete/{id}', name: 'delete_event')]
     public function delete(Events $event, ManagerRegistry $doctrine): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $manager = $doctrine->getManager();
         $manager->remove($event);
         $manager->flush();
