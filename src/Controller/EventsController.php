@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Events;
 use App\Form\EventsFormType;
 use App\Repository\EventsRepository;
+use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -18,13 +19,27 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 #[Route('dashboard/events')]
 class EventsController extends AbstractController
 {
-    #[Route('/', name: 'events')]
+
+    #[Route('/{page<\d+>?1}', name: 'events')]
+    public function index(EventsRepository $eventsRepository, $page): Response
+    {
+        $maxPerPage = 20;
+        $totalPages = $eventsRepository->totalPages($maxPerPage);
+        $offset = ($page - 1) * $maxPerPage;
+        $events = $eventsRepository->findBy([], null, $maxPerPage, $offset);
+        return $this->render('events/index.html.twig', [
+            'events' => $events,
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
+        ]);
+    }
+    /*#[Route('/', name: 'events')]
     public function index(ManagerRegistry $doctrine, Request $request): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $repository = $doctrine->getRepository(Events::class);
         $events = $repository->findAll();
         return $this->render('events/index.html.twig', ['events' => $events]);
-    }
+    }*/
 
     #[Route('/edit/{id?0}', name: 'edit_event')]
     public function edit(Events $event = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
