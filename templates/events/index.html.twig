@@ -90,17 +90,17 @@
                                     <a class="page-link" href="{{ path('events' , {'page':currentPage - 1})}}">Previous</a>
                                 </li>
                             {% endif %}
-                            {% if totalPages != 0 %}
-                                {% for i in range(1,totalPages + 1,1) %}
+                            {% if totalPages > 1 %}
+                                {% for i in range(1, totalPages + 1) %}
                                     <li class="page-item {% if currentPage == i %}active{% endif %}">
-                                        <a class="page-link" href="{{ path('events' , {'page':i})}}">{{ i }}</a>
+                                        <a class="page-link" href="{{ path('events', {'page': i}) }}">{{ i }}</a>
                                     </li>
                                 {% endfor %}
-                            {% endif %}
-                            {% if currentPage < totalPages %}
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ path('events' , {'page':currentPage + 1})}}">Next</a>
-                                </li>
+                                {% if currentPage < totalPages %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ path('events', {'page': currentPage + 1}) }}">Next</a>
+                                    </li>
+                                {% endif %}
                             {% endif %}
                         </ul>
                     </nav>

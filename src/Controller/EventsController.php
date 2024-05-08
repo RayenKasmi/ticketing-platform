@@ -20,10 +20,13 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class EventsController extends AbstractController
 {
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/{page<\d+>?1}', name: 'events')]
     public function index(EventsRepository $eventsRepository, $page): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $maxPerPage = 20;
         $totalPages = $eventsRepository->totalPages($maxPerPage);
         $offset = ($page - 1) * $maxPerPage;
@@ -43,10 +46,13 @@ class EventsController extends AbstractController
         return $this->render('events/index.html.twig', ['events' => $events]);
     }*/
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/edit/{id?0}', name: 'edit_event')]
     public function edit(Events $event = null, ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $new = false;
         if (!$event) {
             $new = true;
@@ -97,10 +103,13 @@ class EventsController extends AbstractController
         ]);
     }
 
-    #[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_USER')]
     #[Route('/delete/{id}', name: 'delete_event')]
     public function delete(Events $event, ManagerRegistry $doctrine): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $manager = $doctrine->getManager();
         $manager->remove($event);
         $manager->flush();
