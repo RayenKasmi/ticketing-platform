@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AllUsersBoardController extends AbstractController
 {
-    #[Route('/all-users-board/{page<\d+>?1}', name: 'app_all_users_board')]
+    #[Route('dashboard/all-users-board/{page<\d+>?1}', name: 'app_all_users_board')]
     public function index(UserRepository $userRepository, $page): Response
     {
         $maxPerPage = 20;
