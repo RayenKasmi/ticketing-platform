@@ -17,13 +17,13 @@ class ContactFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'constraints' => [ new NotBlank(['message' => 'Please enter your first name'])]
+                'constraints' => [ new NotBlank(['message' => 'Please enter your name'])]
             ])
             ->add('subject', TextType::class, [
-                'constraints' => [ new NotBlank(['message' => 'Please enter your first name'])]
+                'constraints' => [ new NotBlank(['message' => 'Please enter the subject'])]
             ])
             ->add('message', TextareaType::class, [
-                'constraints' => [ new NotBlank(['message' => 'Please enter your first name']),
+                'constraints' => [ new NotBlank(['message' => 'Please enter your message']),
                     new Length([
                         'min' => 4,
                         'minMessage' => 'Your message should be at least {{ limit }} characters',
