@@ -23,7 +23,7 @@
                 <a href="/home" class="nav-item nav-link">Home</a>
                 <a href="#" class="nav-item nav-link">Contact</a>
                 {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
-                    <a href="#" class="nav-item nav-link">Manage Tickets</a>
+                    <a href="/manage-tickets" class="nav-item nav-link">Manage Tickets</a>
                 {% elseif app.user and 'ROLE_ADMIN' in app.user.roles %}
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                     <a href="#" class="nav-item nav-link">Customer Support</a>
