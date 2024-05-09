@@ -97,7 +97,6 @@ class PaymentController extends AbstractController
      */
     private function sendTickets($ticketsArray, $receiver)
     {
-        $senderName = "NoTicket";
         $receiverName = $receiver->getFirstName() . ' ' . $receiver->getLastName();
 
         $ticketCount = count($ticketsArray);
@@ -114,12 +113,12 @@ class PaymentController extends AbstractController
 
         $fileName = $this->createRandomTicketName();
 
-        $attachmentPath = __DIR__ . 'pubic\tickets\\' . $fileName . '.pdf';
+        $attachmentPath  = $this->ticketGenerator->generateCombinedTickets($ticketsArray, $fileName);
 
         $senderEmail = $this->getParameter('app.mailer_send_username');
 
         $email = (new Email())
-            ->from($senderEmail, "NoTicket")
+            ->from(new Address($senderEmail, 'NoTicket'))
             ->to(new Address($receiver->getEmail(), $receiverName))
             ->subject($subject)
             ->html($messageHtml)
@@ -127,11 +126,7 @@ class PaymentController extends AbstractController
 
         $email->attachFromPath($attachmentPath);
 
-        try {
-            $this->mailer->send($email);
-        } catch (\Exception $e) {
-            $this->logger->error('Error occurred when trying to send tickets via email: ' . $e->getMessage());
-        }
+        $this->mailer->send($email);
 
         if (file_exists($attachmentPath)) {
             unlink($attachmentPath);
@@ -193,6 +188,9 @@ class PaymentController extends AbstractController
         $this->entityManager->flush();
 
         $totalPrice = $eventReservation->getQuantity() * $event->getTicketPrice();
+
+        $tickets = [];
+
         if ($this->processPayment($creditCard, $cvv, $expirationDate, $totalPrice)) {
             $this->entityManager->beginTransaction();
 
@@ -200,7 +198,6 @@ class PaymentController extends AbstractController
                 $buyer = $eventReservation->getUser();
                 $price = $event->getTicketPrice();
                 $buyDate = new \DateTime();
-                $tickets = [];
                 for ($i = 0; $i < $quantity; $i++) {
                     $firstName = $firstNames[$i];
                     $lastName = $lastNames[$i];
@@ -240,6 +237,14 @@ class PaymentController extends AbstractController
             $this->increaseAvailableTickets($event, $quantity);
 
             return $this->redirectToRoute('app_event_page', ['id' => $event->getId()]);
+        }
+
+        try {
+            $this->sendTickets($tickets, $buyer);
+        } catch (TransportExceptionInterface $e) {
+            $this->logger->error('Error occurred while trying to send tickets via email: ' . $e->getMessage());
+        } catch (\Exception $e) {
+            $this->logger->error('Error occurred while trying to send tickets via email: ' . $e->getMessage());
         }
 
         return $this->redirectToRoute('app_manage_tickets');
