@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "837bf7454dfac51b62ef5fc407560965",
+    "content-hash": "e5265c8310fb49c380dabd933fcc6df6",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -140,56 +140,6 @@
                 }
             ],
             "time": "2023-08-31T09:50:34+00:00"
-        },
-        {
-            "name": "dasprid/enum",
-            "version": "1.0.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/DASPRiD/Enum.git",
-                "reference": "6faf451159fb8ba4126b925ed2d78acfce0dc016"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/DASPRiD/Enum/zipball/6faf451159fb8ba4126b925ed2d78acfce0dc016",
-                "reference": "6faf451159fb8ba4126b925ed2d78acfce0dc016",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1 <9.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^7 | ^8 | ^9",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "DASPRiD\\Enum\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Ben Scholzen 'DASPRiD'",
-                    "email": "mail@dasprids.de",
-                    "homepage": "https://dasprids.de/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP 7.1 enum implementation",
-            "keywords": [
-                "enum",
-                "map"
-            ],
-            "support": {
-                "issues": "https://github.com/DASPRiD/Enum/issues",
-                "source": "https://github.com/DASPRiD/Enum/tree/1.0.5"
-            },
-            "time": "2023-08-25T16:18:39+00:00"
         },
         {
             "name": "doctrine/cache",
@@ -1476,79 +1426,6 @@
                 }
             ],
             "time": "2023-10-06T06:47:41+00:00"
-        },
-        {
-            "name": "endroid/qrcode",
-            "version": "5.0.8",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/endroid/qr-code.git",
-                "reference": "cb6b31a7aa99df9c6c2dc09a5fa2aaa617f6e5bb"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/endroid/qr-code/zipball/cb6b31a7aa99df9c6c2dc09a5fa2aaa617f6e5bb",
-                "reference": "cb6b31a7aa99df9c6c2dc09a5fa2aaa617f6e5bb",
-                "shasum": ""
-            },
-            "require": {
-                "bacon/bacon-qr-code": "^3.0",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "endroid/quality": "dev-main",
-                "ext-gd": "*",
-                "khanamiryan/qrcode-detector-decoder": "^2.0.2",
-                "setasign/fpdf": "^1.8.2"
-            },
-            "suggest": {
-                "ext-gd": "Enables you to write PNG images",
-                "khanamiryan/qrcode-detector-decoder": "Enables you to use the image validator",
-                "roave/security-advisories": "Makes sure package versions with known security issues are not installed",
-                "setasign/fpdf": "Enables you to use the PDF writer"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Endroid\\QrCode\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jeroen van den Enden",
-                    "email": "info@endroid.nl"
-                }
-            ],
-            "description": "Endroid QR Code",
-            "homepage": "https://github.com/endroid/qr-code",
-            "keywords": [
-                "code",
-                "endroid",
-                "php",
-                "qr",
-                "qrcode"
-            ],
-            "support": {
-                "issues": "https://github.com/endroid/qr-code/issues",
-                "source": "https://github.com/endroid/qr-code/tree/5.0.8"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/endroid",
-                    "type": "github"
-                }
-            ],
-            "abandoned": "endroid/qr-code",
-            "time": "2024-04-19T08:36:52+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -5502,85 +5379,6 @@
             "time": "2024-01-29T20:11:03+00:00"
         },
         {
-            "name": "symfony/polyfill-uuid",
-            "version": "v1.29.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-uuid.git",
-                "reference": "3abdd21b0ceaa3000ee950097bc3cf9efc137853"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-uuid/zipball/3abdd21b0ceaa3000ee950097bc3cf9efc137853",
-                "reference": "3abdd21b0ceaa3000ee950097bc3cf9efc137853",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1"
-            },
-            "provide": {
-                "ext-uuid": "*"
-            },
-            "suggest": {
-                "ext-uuid": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "thanks": {
-                    "name": "symfony/polyfill",
-                    "url": "https://github.com/symfony/polyfill"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ],
-                "psr-4": {
-                    "Symfony\\Polyfill\\Uuid\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Grégoire Pineau",
-                    "email": "lyrixx@lyrixx.info"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for uuid functions",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "polyfill",
-                "portable",
-                "uuid"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/polyfill-uuid/tree/v1.29.0"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-01-29T20:11:03+00:00"
-        },
-        {
             "name": "symfony/process",
             "version": "v6.4.4",
             "source": {
@@ -5962,86 +5760,6 @@
                 }
             ],
             "time": "2024-01-23T14:51:35+00:00"
-        },
-        {
-            "name": "symfony/scheduler",
-            "version": "v6.4.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/scheduler.git",
-                "reference": "000e4f1952fa4aa9028e89f98846d865ab80148b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/scheduler/zipball/000e4f1952fa4aa9028e89f98846d865ab80148b",
-                "reference": "000e4f1952fa4aa9028e89f98846d865ab80148b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/clock": "^6.3|^7.0"
-            },
-            "require-dev": {
-                "dragonmantank/cron-expression": "^3.1",
-                "symfony/cache": "^5.4|^6.0|^7.0",
-                "symfony/console": "^5.4|^6.0|^7.0",
-                "symfony/dependency-injection": "^5.4|^6.0|^7.0",
-                "symfony/event-dispatcher": "^5.4|^6.0|^7.0",
-                "symfony/lock": "^5.4|^6.0|^7.0",
-                "symfony/messenger": "^6.3|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Scheduler\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sergey Rabochiy",
-                    "email": "upyx.00@gmail.com"
-                },
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides scheduling through Symfony Messenger",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "cron",
-                "schedule",
-                "scheduler"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/scheduler/tree/v6.4.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-04-18T09:22:46+00:00"
         },
         {
             "name": "symfony/security-bundle",
@@ -7162,80 +6880,6 @@
             "time": "2024-02-15T11:23:52+00:00"
         },
         {
-            "name": "symfony/uid",
-            "version": "v6.4.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/uid.git",
-                "reference": "a66efcb71d8bc3a207d9d78e0bd67f3321510355"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/uid/zipball/a66efcb71d8bc3a207d9d78e0bd67f3321510355",
-                "reference": "a66efcb71d8bc3a207d9d78e0bd67f3321510355",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=8.1",
-                "symfony/polyfill-uuid": "^1.15"
-            },
-            "require-dev": {
-                "symfony/console": "^5.4|^6.0|^7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Uid\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Grégoire Pineau",
-                    "email": "lyrixx@lyrixx.info"
-                },
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Provides an object-oriented API to generate and represent UIDs",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "UID",
-                "ulid",
-                "uuid"
-            ],
-            "support": {
-                "source": "https://github.com/symfony/uid/tree/v6.4.7"
-            },
-            "funding": [
-                {
-                    "url": "https://symfony.com/sponsor",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/fabpot",
-                    "type": "github"
-                },
-                {
-                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
-                    "type": "tidelift"
-                }
-            ],
-            "time": "2024-04-18T09:22:46+00:00"
-        },
-        {
             "name": "symfony/ux-turbo",
             "version": "v2.17.0",
             "source": {
@@ -7789,78 +7433,6 @@
                 "source": "https://github.com/SymfonyCasts/verify-email-bundle/tree/v1.17.0"
             },
             "time": "2024-03-17T02:29:53+00:00"
-        },
-        {
-            "name": "tecnickcom/tcpdf",
-            "version": "6.7.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "951eabf0338ec2522bd0d5d9c79b08a3a3d36b36"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/951eabf0338ec2522bd0d5d9c79b08a3a3d36b36",
-                "reference": "951eabf0338ec2522bd0d5d9c79b08a3a3d36b36",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.0"
-            },
-            "type": "library",
-            "autoload": {
-                "classmap": [
-                    "config",
-                    "include",
-                    "tcpdf.php",
-                    "tcpdf_parser.php",
-                    "tcpdf_import.php",
-                    "tcpdf_barcodes_1d.php",
-                    "tcpdf_barcodes_2d.php",
-                    "include/tcpdf_colors.php",
-                    "include/tcpdf_filters.php",
-                    "include/tcpdf_font_data.php",
-                    "include/tcpdf_fonts.php",
-                    "include/tcpdf_images.php",
-                    "include/tcpdf_static.php",
-                    "include/barcodes/datamatrix.php",
-                    "include/barcodes/pdf417.php",
-                    "include/barcodes/qrcode.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Nicola Asuni",
-                    "email": "info@tecnick.com",
-                    "role": "lead"
-                }
-            ],
-            "description": "TCPDF is a PHP class for generating PDF documents and barcodes.",
-            "homepage": "http://www.tcpdf.org/",
-            "keywords": [
-                "PDFD32000-2008",
-                "TCPDF",
-                "barcodes",
-                "datamatrix",
-                "pdf",
-                "pdf417",
-                "qrcode"
-            ],
-            "support": {
-                "issues": "https://github.com/tecnickcom/TCPDF/issues",
-                "source": "https://github.com/tecnickcom/TCPDF/tree/6.7.5"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&currency_code=GBP&business=paypal@tecnick.com&item_name=donation%20for%20tcpdf%20project",
-                    "type": "custom"
-                }
-            ],
-            "time": "2024-04-20T17:25:10+00:00"
         },
         {
             "name": "twig/extra-bundle",
