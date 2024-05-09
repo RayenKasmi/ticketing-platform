@@ -78,8 +78,11 @@ class TicketGeneratorService
             $pdf->Cell($availableWidth, 15, $eventName . ' Ticket', 0, 1, 'C', true);
         }
 
-//        $pdf->Image('qrcode.png', 160, 60, 30);
-//        $pdf->ImageSVG("assets/pic.svg", $x=30, $y=6, $w=25, $h=25, $align='', $palign='', $border=1, $fitonpage=false);
+
+        $projectDir = $this->kernel->getProjectDir();
+        $directory = $projectDir . '/assets';
+        $svgPath = $directory . '/' . 'pic.svg';
+        $pdf->ImageSVG($svgPath, $x=30, $y=6, $w=25, $h=25, $align='', $palign='', $border=1, $fitonpage=false);
 
         $pdf->SetFont('helvetica', 'I', 12);
         $companyNameY = $pdf->GetY() ;
