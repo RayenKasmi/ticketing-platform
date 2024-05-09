@@ -10,19 +10,20 @@ use App\Repository\FormSubmissionsRepository;
 
 class CustomerSupportController extends AbstractController
 {
-    #[Route('/customer-support', name: 'customer_support', methods: ['GET'])]
-    public function index(FormSubmissionsRepository $formSubmissionRepository, Request $request): Response
+    #[Route('/customer-support/{page<\d+>?1}', name: 'customer_support', methods: ['GET'])]
+    public function index(FormSubmissionsRepository $formSubmissionRepository, Request $request, $page): Response
     {
-
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_home');
+        }
         $maxPerPage = 10;
         $totalPages = $formSubmissionRepository->totalPages($maxPerPage);
-        $currentPage = $request->query->getInt('page', 1);
-        $offset = ($currentPage - 1) * $maxPerPage;
+        $offset = ($page - 1) * $maxPerPage;
         $contactForms = $formSubmissionRepository->findBy([], null, $maxPerPage, $offset);
 
         return $this->render('customer_support/index.html.twig', [
             'contactForms' => $contactForms,
-            'currentPage' => $currentPage,
+            'currentPage' => $page,
             'totalPages' => $totalPages,
 
         ]);

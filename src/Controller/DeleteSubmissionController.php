@@ -6,6 +6,7 @@ use App\Repository\FormSubmissionsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class DeleteSubmissionController extends AbstractController
@@ -14,7 +15,7 @@ class DeleteSubmissionController extends AbstractController
     public function handleDeletion(FormSubmissionsRepository $formSubmissionRepository, Request $request): Response
     {
 
-        if ($request->query->has('id')) {
+        try{
             $submissionId = $request->query->get('id');
 
             // Check if the submissionId is a single id or multiple ids
@@ -28,7 +29,7 @@ class DeleteSubmissionController extends AbstractController
             }
             $page = $request->query->get('page', 1);
             return $this->redirectToRoute('customer_support', ['page' => $page]);
-        } else {
+        } catch (NotFoundHttpException $exception) {
             return $this->redirectToRoute('customer_support', ['invalidSubmissionId' => true]);
         }
     }
