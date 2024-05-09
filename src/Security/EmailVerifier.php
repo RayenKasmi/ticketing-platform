@@ -21,6 +21,7 @@ class EmailVerifier
 
     public function sendEmailConfirmation(string $verifyEmailRouteName, UserInterface $user, TemplatedEmail $email): void
     {
+
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
@@ -33,6 +34,14 @@ class EmailVerifier
         $context['expiresAtMessageData'] = $signatureComponents->getExpirationMessageData();
 
         $email->context($context);
+
+        // Configure SMTP encryption method (STARTTLS)
+        $email->getHeaders()->addTextHeader('X-Mailer', 'Symfony Mailer');
+        $email->getHeaders()->addTextHeader('X-Auto-Response-Suppress', 'All');
+        $email->getHeaders()->addTextHeader('X-Priority', '3');
+
+        // You can set the SMTP encryption method here
+        $email->getHeaders()->addTextHeader('SMTPSecure', 'tls');
 
         $this->mailer->send($email);
     }
