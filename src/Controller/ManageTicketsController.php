@@ -33,14 +33,6 @@ class ManageTicketsController extends AbstractController
 
         $user = $this->getUser();
 
-        if (!$user instanceof User) {
-            return $this->redirectToRoute('app_login');
-        }
-
-        if (!$this->security->isGranted('ROLE_CUSTOMER')) {
-            return $this->redirectToRoute('app_home');
-        }
-
         $ticketRepository = $this->entityManager->getRepository(Ticket::class);
         $tickets = $ticketRepository->findBy(['buyer' => $user]);
 
@@ -54,16 +46,13 @@ class ManageTicketsController extends AbstractController
     public function viewTicket(Ticket $ticket=null): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException('You must be logged in to view this ticket.');
-        }
 
         if (!$ticket) {
             throw $this->createNotFoundException('Ticket not found');
         }
 
         if ($ticket->getBuyer() !== $user) {
-            throw new AccessDeniedException('You are not authorized to view this ticket.');
+            return new Response('Unauthorized ticket', Response::HTTP_NOT_FOUND);
         }
 
         $pdfContent = $this->ticketGenerator->generateSingleTicket($ticket, 'view');
@@ -77,16 +66,13 @@ class ManageTicketsController extends AbstractController
     public function downloadTicket(Ticket $ticket=null): Response
     {
         $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException('You must be logged in to download this ticket.');
-        }
 
         if (!$ticket) {
             throw $this->createNotFoundException('Ticket not found');
         }
 
         if ($ticket->getBuyer() !== $user) {
-            throw new AccessDeniedException('You are not authorized to download this ticket.');
+            return new Response('Unauthorized ticket', Response::HTTP_NOT_FOUND);
         }
 
         $pdfContent = $this->ticketGenerator->generateSingleTicket($ticket, 'download');
