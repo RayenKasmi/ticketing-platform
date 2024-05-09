@@ -21,16 +21,19 @@
                                 {{ message }}
                             </div>
                         {% endfor %}
+                        {% do app.session.flashBag.clear('info') %}
                         {% for message in app.session.flashBag.get('success') %}
                             <div class="alert alert-success">
                                 {{ message }}
                             </div>
                         {% endfor %}
+                        {% do app.session.flashBag.clear('success') %}
                         {% for message in app.session.flashBag.get('error') %}
                             <div class="alert alert-danger">
                                 {{ message }}
                             </div>
                         {% endfor %}
+                        {% do app.session.flashBag.clear('error') %}
                     </div>
                     <a class="btn btn-primary text-white" href="{{ path("edit_event") }}" role="button">Add Event</a>
                     <div class="row d-flex justify-content-center">
@@ -143,8 +146,5 @@
         [data-title] {
             position: relative;
         }
-
-
-
     </style>
 {% endblock %}
