@@ -3,45 +3,52 @@
 namespace App\Controller;
 
 use App\Entity\Ticket;
-use App\Entity\User;
 use App\Service\TicketGeneratorService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ManageTicketsController extends AbstractController
 {
-    private Security $security;
     private EntityManagerInterface $entityManager;
     private TicketGeneratorService $ticketGenerator;
 
 
 
-    public function __construct(EntityManagerInterface $entityManager, Security $security, TicketGeneratorService $ticketGenerator)
+    public function __construct(EntityManagerInterface $entityManager, TicketGeneratorService $ticketGenerator)
     {
         $this->entityManager = $entityManager;
-        $this->security = $security;
         $this->ticketGenerator = $ticketGenerator;
     }
 
     #[Route('/manage-tickets', name: 'app_manage_tickets')]
-    public function index(): Response
+    public function index(Request $request): Response
     {
 
         $user = $this->getUser();
 
+        $page = $request->query->getInt('page', 1);
+
+        $ticketsPerPage = 6;
+        $offset = ($page - 1) * $ticketsPerPage;
+
         $ticketRepository = $this->entityManager->getRepository(Ticket::class);
         $tickets = $ticketRepository->findBy(
             ['buyer' => $user],
-            ['purchase_date' => 'DESC']
+            ['purchase_date' => 'DESC'],
+            $ticketsPerPage,
+            $offset
         );
 
+        $totalTickets = $ticketRepository->count(['buyer' => $user]);
+        $totalPages = ceil($totalTickets / $ticketsPerPage);
 
         return $this->render('manage_tickets/index.html.twig', [
             'tickets' => $tickets,
+            'current_page' => $page,
+            'total_pages' => $totalPages,
         ]);
     }
 

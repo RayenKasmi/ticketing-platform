@@ -7,32 +7,40 @@
         .ticket-card {
             width: 90%;
             max-width: 600px;
-            margin: 0 auto 20px;
+            margin: 0 auto;
             border: 2px solid #000;
             border-radius: 10px;
             padding: 15px;
         }
+        .active-page {
+            background-color: #293049;
+            color: #fff;
+        }
     </style>
     <div class="container py-5 text-center">
-        <div style="margin-top: 20vh;"></div>
-        <h1 class="mb-4">Your Tickets:</h1>
+        <div style="margin-top: 15vh;"></div>
+        <h1 class="mb-5">Your Tickets:</h1>
         {% for ticket in tickets %}
             <div class="card ticket-card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Ticket ID: {{ ticket.id }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.holderName }}</h6>
+                    <h4 class="card-title mb-4">{{ ticket.event.name }}</h4>
+                    <h5 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.holderName }}</h5>
                     <p class="card-text">
-                        <strong>Event:</strong> {{ ticket.event.name }},
                         <strong>Venue:</strong> {{ ticket.event.venue }},
                         <strong>Date:</strong> {{ ticket.event.eventDate|date('Y-m-d') }}
                     </p>
                     <p class="card-text">Purchase Date: {{ ticket.purchaseDate|date('Y-m-d') }}</p>
-
+                    <p class="card-text">Ticket ID: {{ ticket.id }}</p>
                     <a href="{{ path('app_ticket_view', {'id': ticket.id}) }}" class="btn btn-primary text-white" onclick="openInNewTab(this.href); return false;">View Ticket PDF</a>
                     <a href="{{ path('app_ticket_download', {'id': ticket.id}) }}" class="btn btn-primary text-white">Download Ticket PDF</a>
 
                 </div>
             </div>
+        {% endfor %}
+
+
+        {% for page in 1..total_pages %}
+            <a href="{{ path('app_manage_tickets', {'page': page}) }}" class="btn {% if current_page == page %}active-page{% else %}btn-secondary{% endif %}">{{ page }}</a>
         {% endfor %}
     </div>
     <script>
