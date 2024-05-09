@@ -78,6 +78,8 @@ class EventsController extends AbstractController
                     $image->move($this->getParameter('images_directory'), $newFilename);
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
+                    $this->addFlash('error', 'Creating event failed' );
+                    return $this->redirectToRoute('events');
                 }
 
                 // updates the 'brochureFilename' property to store the PDF file name
