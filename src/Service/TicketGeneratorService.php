@@ -60,7 +60,7 @@ class TicketGeneratorService
         $buyer = $ticket->getBuyer();
         $buyerName = $buyer->getFirstName() . ' ' . $buyer->getLastName();
         $ticketHolderName = $ticket->getHolderName();
-        $price = $ticket->getPrice();
+        $price = $ticket->getPrice() / 100;
         $ticketId = $ticket->getId();
 
 
