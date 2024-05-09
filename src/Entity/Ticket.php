@@ -5,14 +5,18 @@ namespace App\Entity;
 use App\Repository\TicketRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Bridge\Doctrine\Types\UuidType;
+
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 class Ticket
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: UuidType::NAME, unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,7 +38,7 @@ class Ticket
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $purchase_date = null;
 
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }
