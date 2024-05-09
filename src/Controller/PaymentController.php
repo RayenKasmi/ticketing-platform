@@ -91,47 +91,6 @@ class PaymentController extends AbstractController
 
     }
 
-    /**
-     * @throws TransportExceptionInterface
-     */
-    private function sendTickets($ticketsArray, $receiver)
-    {
-        $receiverName = $receiver->getFirstName() . ' ' . $receiver->getLastName();
-
-        $ticketCount = count($ticketsArray);
-
-        if ($ticketCount > 1) {
-            $subject = "Tickets for event: " . $ticketsArray[0]->getEvent()->getName();
-            $messageHtml = "Dear $receiverName, <br><br> Attached are your tickets for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
-            $messageText = "Dear $receiverName, \n\n Attached are your tickets for the event: {$ticketsArray[0]->getEvent()->getName()}.";
-        } else {
-            $subject = "Ticket for event: " . $ticketsArray[0]->getEvent()->getName();
-            $messageHtml = "Dear $receiverName, <br><br> Attached is your ticket for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
-            $messageText = "Dear $receiverName, \n\n Attached is your ticket for the event: {$ticketsArray[0]->getEvent()->getName()}.";
-        }
-
-        $fileName = $this->createRandomTicketName();
-
-        $attachmentPath  = $this->ticketGenerator->generateCombinedTickets($ticketsArray, $fileName);
-
-        $senderEmail = $this->getParameter('app.mailer_send_username');
-
-        $email = (new Email())
-            ->from(new Address($senderEmail, 'NoTicket'))
-            ->to(new Address($receiver->getEmail(), $receiverName))
-            ->subject($subject)
-            ->html($messageHtml)
-            ->text($messageText);
-
-        $email->attachFromPath($attachmentPath);
-
-        $this->mailer->send($email);
-
-        if (file_exists($attachmentPath)) {
-            unlink($attachmentPath);
-        }
-    }
-
     private function handlePaymentPostRequest(Request $request, EventReservation $eventReservation): RedirectResponse | Response
     {
         $requestData = $request->request->all();
@@ -249,8 +208,48 @@ class PaymentController extends AbstractController
         return $this->redirectToRoute('app_manage_tickets');
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function sendTickets($ticketsArray, $receiver)
+    {
+        $receiverName = $receiver->getFirstName() . ' ' . $receiver->getLastName();
 
-    function checkCreditCard($creditCard, $cvv, $expirationDate)
+        $ticketCount = count($ticketsArray);
+
+        if ($ticketCount > 1) {
+            $subject = "Tickets for event: " . $ticketsArray[0]->getEvent()->getName();
+            $messageHtml = "Dear $receiverName, <br><br> Attached are your tickets for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached are your tickets for the event: {$ticketsArray[0]->getEvent()->getName()}.";
+        } else {
+            $subject = "Ticket for event: " . $ticketsArray[0]->getEvent()->getName();
+            $messageHtml = "Dear $receiverName, <br><br> Attached is your ticket for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached is your ticket for the event: {$ticketsArray[0]->getEvent()->getName()}.";
+        }
+
+        $fileName = $this->createRandomTicketName();
+
+        $attachmentPath  = $this->ticketGenerator->generateCombinedTickets($ticketsArray, $fileName);
+
+        $senderEmail = $this->getParameter('app.mailer_send_username');
+
+        $email = (new Email())
+            ->from(new Address($senderEmail, 'NoTicket'))
+            ->to(new Address($receiver->getEmail(), $receiverName))
+            ->subject($subject)
+            ->html($messageHtml)
+            ->text($messageText);
+
+        $email->attachFromPath($attachmentPath);
+
+        $this->mailer->send($email);
+
+        if (file_exists($attachmentPath)) {
+            unlink($attachmentPath);
+        }
+    }
+
+    private function checkCreditCard($creditCard, $cvv, $expirationDate)
     {
         $creditCardPattern = '/^[0-9]{15,16}$/';
         $cvvPattern = '/^[0-9]{3}$/';

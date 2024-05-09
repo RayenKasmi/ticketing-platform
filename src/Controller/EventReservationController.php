@@ -132,7 +132,6 @@ class EventReservationController extends AbstractController
             return new Response('Unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
-        $refererUrl = $request->headers->get('referer');
         $event = $eventReservation->getEvent();
         $quantity = $eventReservation->getQuantity();
 
@@ -145,7 +144,7 @@ class EventReservationController extends AbstractController
 
         $this->entityManager->flush();
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('app_event_page', ['id' => $event->getId()]);
     }
 
 }
