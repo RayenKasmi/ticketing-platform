@@ -99,7 +99,7 @@ class Ticket
         return $this;
     }
 
-    public function getPurchaseDate(): ?string
+    public function getPurchaseDate(): ?\DateTimeInterface
     {
         return $this->purchase_date;
     }

@@ -5,31 +5,40 @@ namespace App\Controller;
 use App\Entity\EventReservation;
 use App\Entity\Ticket;
 use Doctrine\ORM\EntityManagerInterface;
+use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Service\TicketGeneratorService;
+use Symfony\Component\Mime\Email;
+
 
 class PaymentController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private LoggerInterface $logger;
+    private TicketGeneratorService $ticketGenerator;
+    private MailerInterface $mailer;
 
-    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
+
+
+    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger, TicketGeneratorService $ticketGenerator, MailerInterface $mailer)
     {
         $this->logger = $logger;
         $this->entityManager = $entityManager;
+        $this->ticketGenerator = $ticketGenerator;
+        $this->mailer = $mailer;
     }
 
     #[Route('/payment/{id}', name: 'app_payment')]
     public function index(Request $request, EventReservation $eventReservation=null): RedirectResponse | Response
     {
-        if (!$this->getUser()) {
-            return new Response('The event reservation does not exist', Response::HTTP_NOT_FOUND);
-        }
-
         if (!$eventReservation) {
             return new Response('Unauthorized reservation', Response::HTTP_NOT_FOUND);
         }
@@ -75,6 +84,58 @@ class PaymentController extends AbstractController
             'expiration' => $expiration,
             'reservation_id' => $eventReservation->getId(),
         ]);
+    }
+
+    private function createRandomTicketName(): string
+    {
+        return uniqid('ticket');
+
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function sendTickets($ticketsArray, $receiver)
+    {
+        $senderName = "NoTicket";
+        $receiverName = $receiver->getFirstName() . ' ' . $receiver->getLastName();
+
+        $ticketCount = count($ticketsArray);
+
+        if ($ticketCount > 1) {
+            $subject = "Tickets for event: " . $ticketsArray[0]->getEvent()->getName();
+            $messageHtml = "Dear $receiverName, <br><br> Attached are your tickets for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached are your tickets for the event: {$ticketsArray[0]->getEvent()->getName()}.";
+        } else {
+            $subject = "Ticket for event: " . $ticketsArray[0]->getEvent()->getName();
+            $messageHtml = "Dear $receiverName, <br><br> Attached is your ticket for the event: <strong>{$ticketsArray[0]->getEvent()->getName()}</strong>.";
+            $messageText = "Dear $receiverName, \n\n Attached is your ticket for the event: {$ticketsArray[0]->getEvent()->getName()}.";
+        }
+
+        $fileName = $this->createRandomTicketName();
+
+        $attachmentPath = __DIR__ . 'pubic\tickets\\' . $fileName . '.pdf';
+
+        $senderEmail = $this->getParameter('app.mailer_send_username');
+
+        $email = (new Email())
+            ->from($senderEmail, "NoTicket")
+            ->to(new Address($receiver->getEmail(), $receiverName))
+            ->subject($subject)
+            ->html($messageHtml)
+            ->text($messageText);
+
+        $email->attachFromPath($attachmentPath);
+
+        try {
+            $this->mailer->send($email);
+        } catch (\Exception $e) {
+            $this->logger->error('Error occurred when trying to send tickets via email: ' . $e->getMessage());
+        }
+
+        if (file_exists($attachmentPath)) {
+            unlink($attachmentPath);
+        }
     }
 
     private function handlePaymentPostRequest(Request $request, EventReservation $eventReservation): RedirectResponse | Response
@@ -139,6 +200,7 @@ class PaymentController extends AbstractController
                 $buyer = $eventReservation->getUser();
                 $price = $event->getTicketPrice();
                 $buyDate = new \DateTime();
+                $tickets = [];
                 for ($i = 0; $i < $quantity; $i++) {
                     $firstName = $firstNames[$i];
                     $lastName = $lastNames[$i];
@@ -153,6 +215,8 @@ class PaymentController extends AbstractController
                     $ticket->setPurchaseDate($buyDate);
 
                     $this->entityManager->persist($ticket);
+
+                    $tickets[] = $ticket;
                 }
                 $this->entityManager->flush();
 
@@ -178,7 +242,7 @@ class PaymentController extends AbstractController
             return $this->redirectToRoute('app_event_page', ['id' => $event->getId()]);
         }
 
-        return $this->redirectToRoute('app_home');
+        return $this->redirectToRoute('app_manage_tickets');
     }
 
 
