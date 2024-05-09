@@ -34,7 +34,10 @@ class ManageTicketsController extends AbstractController
         $user = $this->getUser();
 
         $ticketRepository = $this->entityManager->getRepository(Ticket::class);
-        $tickets = $ticketRepository->findBy(['buyer' => $user]);
+        $tickets = $ticketRepository->findBy(
+            ['buyer' => $user],
+            ['purchase_date' => 'DESC']
+        );
 
 
         return $this->render('manage_tickets/index.html.twig', [

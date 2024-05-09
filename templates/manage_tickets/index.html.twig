@@ -20,7 +20,7 @@
             <div class="card ticket-card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Ticket ID: {{ ticket.id }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.buyer.firstName }} {{ ticket.buyer.lastName }}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.holderName }}</h6>
                     <p class="card-text">
                         <strong>Event:</strong> {{ ticket.event.name }},
                         <strong>Venue:</strong> {{ ticket.event.venue }},

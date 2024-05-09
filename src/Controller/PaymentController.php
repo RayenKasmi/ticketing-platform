@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\EventReservation;
 use App\Entity\Ticket;
 use Doctrine\ORM\EntityManagerInterface;
-use mysql_xdevapi\Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
