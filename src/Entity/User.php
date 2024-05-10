@@ -215,4 +215,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * @return Collection<int, EventReservation>
+     */
+    public function getEventReservations(): Collection
+    {
+        return $this->eventReservations;
+    }
+
+    public function addEventReservation(EventReservation $eventReservation): static
+    {
+        if (!$this->eventReservations->contains($eventReservation)) {
+            $this->eventReservations->add($eventReservation);
+            $eventReservation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventReservation(EventReservation $eventReservation): static
+    {
+        if ($this->eventReservations->removeElement($eventReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($eventReservation->getUser() === $this) {
+                $eventReservation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setBuyer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getBuyer() === $this) {
+                $ticket->setBuyer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->firstname . ' '. $this->lastname;
+    }
+>>>>>>> Stashed changes
 }

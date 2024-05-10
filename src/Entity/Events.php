@@ -206,4 +206,74 @@ class Events
 
         return $this;
     }
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * @return Collection<int, EventReservation>
+     */
+    public function getEventReservations(): Collection
+    {
+        return $this->eventReservations;
+    }
+
+    public function addEventReservation(EventReservation $eventReservation): static
+    {
+        if (!$this->eventReservations->contains($eventReservation)) {
+            $this->eventReservations->add($eventReservation);
+            $eventReservation->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventReservation(EventReservation $eventReservation): static
+    {
+        if ($this->eventReservations->removeElement($eventReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($eventReservation->getEvent() === $this) {
+                $eventReservation->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getEvent() === $this) {
+                $ticket->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+
+>>>>>>> Stashed changes
 }
