@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Repository\CategoriesRepository;
 use App\Repository\EventsRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
