@@ -25,7 +25,8 @@ class EmailVerifier
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
             $user->getId(),
-            $user->getEmail()
+            $user->getEmail(),
+            ['id' => $user->getId()]
         );
 
         $context = $email->getContext();
@@ -39,9 +40,10 @@ class EmailVerifier
         $email->getHeaders()->addTextHeader('X-Mailer', 'Symfony Mailer');
         $email->getHeaders()->addTextHeader('X-Auto-Response-Suppress', 'All');
         $email->getHeaders()->addTextHeader('X-Priority', '3');
-
+/*
         // You can set the SMTP encryption method here
         $email->getHeaders()->addTextHeader('SMTPSecure', 'tls');
+*/
 
         $this->mailer->send($email);
     }
