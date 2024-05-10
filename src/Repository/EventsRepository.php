@@ -39,6 +39,24 @@ class EventsRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function searchEvents(string $term): array
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb->where(
+            $qb->expr()->orX(
+                $qb->expr()->like('e.shortDescription', ':term'),
+                $qb->expr()->like('e.longDescription', ':term'),
+                $qb->expr()->like('e.name', ':term'),
+                $qb->expr()->like('e.venue', ':term'),
+                $qb->expr()->like('e.organizer', ':term')
+            )
+        )
+            ->setParameter('term', '%' . $term . '%');
+
+        // Execute the query
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Events[] Returns an array of Events objects
 //     */
