@@ -4,11 +4,19 @@ namespace App\Entity;
 
 use App\Repository\EventsRepository;
 use Doctrine\DBAL\Types\Types;
+use App\Traits\TimeTrait;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: EventsRepository::class)]
+
+#[
+    ORM\HasLifecycleCallbacks()
+]
+
 class Events
 {
+    use TimeTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
