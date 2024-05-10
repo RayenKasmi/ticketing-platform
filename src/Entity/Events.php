@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use App\Traits\TimeTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -58,6 +60,24 @@ class Events
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $category = null;
+
+    /**
+     * @var Collection<int, EventReservation>
+     */
+    #[ORM\OneToMany(targetEntity: EventReservation::class, mappedBy: 'event')]
+    private Collection $eventReservations;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'event')]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        $this->eventReservations = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -204,6 +224,66 @@ class Events
     public function setCategory(?Categories $category): static
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EventReservation>
+     */
+    public function getEventReservations(): Collection
+    {
+        return $this->eventReservations;
+    }
+
+    public function addEventReservation(EventReservation $eventReservation): static
+    {
+        if (!$this->eventReservations->contains($eventReservation)) {
+            $this->eventReservations->add($eventReservation);
+            $eventReservation->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventReservation(EventReservation $eventReservation): static
+    {
+        if ($this->eventReservations->removeElement($eventReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($eventReservation->getEvent() === $this) {
+                $eventReservation->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getEvent() === $this) {
+                $ticket->setEvent(null);
+            }
+        }
 
         return $this;
     }

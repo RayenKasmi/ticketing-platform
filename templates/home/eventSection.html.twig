@@ -30,7 +30,7 @@
                     <div class="row g-4">
                         <div class="col-lg-12">
                             <div class="row g-4">
-                                {% for event in events %}
+                                {% for event in upcomingEvents %}
                                     {% include 'home/eventItem.html.twig' with {'event': event} %}
                                 {% endfor %}
                             </div>
