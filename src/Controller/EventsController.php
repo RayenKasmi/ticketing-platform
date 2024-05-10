@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -20,31 +21,38 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class EventsController extends AbstractController
 {
 
-    #[IsGranted('ROLE_USER')]
-    #[Route('/{page<\d+>?1}', name: 'events')]
-    public function index(EventsRepository $eventsRepository, $page): Response
+    /*#[IsGranted('ROLE_USER')]
+    #[Route('/', name: 'app_admin_events')]
+    public function index(EventsRepository $eventsRepository): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_home');
         }
-        $maxPerPage = 20;
-        $totalPages = $eventsRepository->totalPages($maxPerPage);
-        $offset = ($page - 1) * $maxPerPage;
-        $events = $eventsRepository->findBy([], null, $maxPerPage, $offset);
+        $events = $eventsRepository->findAll();
         return $this->render('events/index.html.twig', [
             'events' => $events,
-            'totalPages' => $totalPages,
+        ]);
+    }*/
+
+    #[IsGranted('ROLE_USER')]
+    #[Route('/{page<\d+>?1}', name: 'app_admin_events')]
+    public function indexAlls(ManagerRegistry $doctrine, EventsRepository $eventsRepository, $page, SessionInterface $session): Response
+    {
+        $repository = $doctrine->getRepository(Events::class);
+        $nbEvents = $repository->count([]);
+        // 24
+        $nbrePage = ceil($nbEvents / 5) ;
+
+        $events = $repository->findBy([], [],5, ($page - 1 ) * 5);
+
+        return $this->render('events/index.html.twig', [
+            'events' => $events,
+            'isPaginated' => true,
+            'totalPages' => $nbrePage,
             'currentPage' => $page,
         ]);
     }
 
-    /*#[Route('/', name: 'events')]
-    public function index(ManagerRegistry $doctrine, Request $request): Response {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $repository = $doctrine->getRepository(Events::class);
-        $events = $repository->findAll();
-        return $this->render('events/index.html.twig', ['events' => $events]);
-    }*/
 
     #[IsGranted('ROLE_USER')]
     #[Route('/edit/{id?0}', name: 'edit_event')]
@@ -79,7 +87,7 @@ class EventsController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                     $this->addFlash('error', 'Creating event failed' );
-                    return $this->redirectToRoute('events');
+                    return $this->redirectToRoute('app_admin_events', ['page' => 1]);
                 }
 
                 // updates the 'brochureFilename' property to store the PDF file name
@@ -88,16 +96,16 @@ class EventsController extends AbstractController
             }
 
             if($new) {
-                $message = "Event added successfully";
+                $message = 'Event added successfully';
             } else {
-                $message = "Event updated successfully";
+                $message = 'Event updated successfully';
             }
 
             $manager = $doctrine->getManager();
             $manager->persist($event);
             $manager->flush();
             $this->addFlash('success', $message );
-            return $this->redirectToRoute('events');
+            return $this->redirectToRoute('app_admin_events', ['page' => 1]);
         }
         return $this->render('events/edit-event.html.twig', [
             'controller_name' => 'EventsController',
@@ -116,6 +124,6 @@ class EventsController extends AbstractController
         $manager->remove($event);
         $manager->flush();
         $this->addFlash('success', 'Event deleted successfully');
-        return $this->redirectToRoute('events');
+        return $this->redirectToRoute('app_admin_events');
     }
 }

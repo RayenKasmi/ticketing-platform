@@ -60,13 +60,11 @@ class EventsFormType extends AbstractType
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter the start sell time']),
                 ],
-                'data' => new \DateTime(),
             ])
             ->add('eventDate', DateType::class, [
                 'constraints' => [
                     new NotBlank(['message' => 'Please enter the event date']),
                 ],
-                'data' => new \DateTime(),
             ])
             ->add('ticketPrice', MoneyType::class, [
                 'constraints' => [
