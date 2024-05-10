@@ -17,32 +17,56 @@
             color: #fff;
         }
     </style>
-    <div class="container py-5 text-center">
-        <div style="margin-top: 15vh;"></div>
-        <h1 class="mb-5">Your Tickets:</h1>
-        {% for ticket in tickets %}
-            <div class="card ticket-card mb-4">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">{{ ticket.event.name }}</h4>
-                    <h5 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.holderName }}</h5>
-                    <p class="card-text">
-                        <strong>Venue:</strong> {{ ticket.event.venue }},
-                        <strong>Date:</strong> {{ ticket.event.eventDate|date('Y-m-d') }}
-                    </p>
-                    <p class="card-text">Purchase Date: {{ ticket.purchaseDate|date('Y-m-d') }}</p>
-                    <p class="card-text">Ticket ID: {{ ticket.id }}</p>
-                    <a href="{{ path('app_ticket_view', {'id': ticket.id}) }}" class="btn btn-primary text-white" onclick="openInNewTab(this.href); return false;">View Ticket PDF</a>
-                    <a href="{{ path('app_ticket_download', {'id': ticket.id}) }}" class="btn btn-primary text-white">Download Ticket PDF</a>
+    <div class="container-fluid">
+        <div class="container py-5 text-center">
+            <div style="margin-top: 15vh;"></div>
+            <h1 class="mb-5">Your Tickets:</h1>
+            {% for ticket in tickets %}
+                <div class="card ticket-card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">{{ ticket.event.name }}</h4>
+                        <h5 class="card-subtitle mb-2 text-muted">Ticket for: {{ ticket.holderName }}</h5>
+                        <p class="card-text">
+                            <strong>Venue:</strong> {{ ticket.event.venue }},
+                            <strong>Date:</strong> {{ ticket.event.eventDate|date('Y-m-d') }}
+                        </p>
+                        <p class="card-text">Purchase Date: {{ ticket.purchaseDate|date('Y-m-d') }}</p>
+                        <p class="card-text">Ticket ID: {{ ticket.id }}</p>
+                        <a href="{{ path('app_ticket_view', {'id': ticket.id}) }}" class="btn btn-primary text-white" onclick="openInNewTab(this.href); return false;">View Ticket PDF</a>
+                        <a href="{{ path('app_ticket_download', {'id': ticket.id}) }}" class="btn btn-primary text-white">Download Ticket PDF</a>
 
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
 
 
-        {% for page in 1..total_pages %}
+            {#        {% for page in 1..total_pages %}
             <a href="{{ path('app_manage_tickets', {'page': page}) }}" class="btn {% if current_page == page %}active-page{% else %}btn-secondary{% endif %}">{{ page }}</a>
-        {% endfor %}
+        {% endfor %}#}
+            <nav aria-label="page_nav" class="d-flex justify-content-center">
+                <ul class="pagination d-inline-flex justify-content-between">
+                    {% if current_page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_manage_tickets' , {'page':current_page - 1})}}">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% if total_pages != 0 %}
+                        {% for i in range(1,total_pages,1) %}
+                            <li class="page-item {% if current_page == i %}active{% endif %}">
+                                <a class="page-link" href="{{ path('app_manage_tickets' , {'page':i})}}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if current_page < total_pages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_manage_tickets' , {'page':current_page + 1})}}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
     </div>
+
     <script>
         function openInNewTab(url) {
             let win = window.open(url, '_blank');

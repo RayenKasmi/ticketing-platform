@@ -20,6 +20,18 @@ class EventsRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Events::class);
     }
+    public function findEventsForTomorrow(\DateTimeImmutable $tomorrow): array
+    {
+        $queryBuilder = $this->createQueryBuilder('e');
+
+        $queryBuilder
+            ->andWhere($queryBuilder->expr()->between('e.eventDate', ':start', ':end'))
+            ->setParameter('start', $tomorrow->format('Y-m-d 00:00:00'))
+            ->setParameter('end', $tomorrow->format('Y-m-d 23:59:59'));
+
+        return $queryBuilder->getQuery()->getResult();
+
+    }
 
 //    /**
 //     * @return Events[] Returns an array of Events objects

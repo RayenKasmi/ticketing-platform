@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Service\NotificationService;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -26,6 +25,7 @@ class NotificationController extends AbstractController
         $maxPerPage = 20;
         $notifications = $this->notificationService->getNotificationsByPage($currentPage,$this->getUser(),$maxPerPage);
         $totalPages = $this->notificationService->getTotalPages($this->getUser()->getId(),$maxPerPage);
+
         return $this->render('notification/index.html.twig', [
             'notifications' => $notifications,
             'totalPages' => $totalPages,
