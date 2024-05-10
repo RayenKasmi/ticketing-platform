@@ -45,7 +45,12 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/contact-form, roles: PUBLIC_ACCESS}
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/customer-support, roles: ROLE_ADMIN }
+        - { path: ^/deleteSubmission, roles: ROLE_ADMIN}
+        - { path: ^/dashboard, roles: ROLE_USER}
         - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/app_all_users_board, roles: ROLE_ADMIN}
+
         - { path: ^/reserve, roles: ROLE_CUSTOMER }
         - { path: ^/cancel-reservation, roles: ROLE_CUSTOMER }
         - { path: ^/payment, roles: ROLE_CUSTOMER }

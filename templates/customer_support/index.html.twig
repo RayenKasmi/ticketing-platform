@@ -1,0 +1,232 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}<div class="container-fluid">
+        <div class="container py-5">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>Contact Form Submissions</h2>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="#" class="btn btn-danger deleteAllSelectedButton" data-page="{{ currentPage }}" data-path="{{ path('app_delete_submission') }}">
+                                    <i class="uil-trash"></i>
+                                    <span>Delete</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>
+                                <div class="form-check">
+                                    <input class="form-check-input custom-checkbox" type="checkbox" value=""
+                                           id="selectAll">
+                                    <label class="form-check-label" for="selectAll"></label>
+                                </div>
+                            </th>
+                            <th>ID</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Details</th>
+                            <th>Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in contactForms %}
+                            <tr>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input custom-checkbox" type="checkbox" value=""
+                                               id="checkbox" data-id="{{ row.id }}">
+                                    </div>
+                                </td>
+                                <td>{{ row.id }}</td>
+                                <td>{{ row.subject }}</td>
+                                <td>{{ row.date|date('Y-m-d') }}</td>
+                                <td>{{ row.date|date('H:i:s') }}</td>
+                                <td>
+                                    <a href="#submissionDetailsModal{{ row.id }}" class="details" data-toggle="modal">
+                                        <i class="uil-file-contract"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="#" class="delete" data-id="{{ row.id }}" data-page="{{ currentPage }}" data-path="{{ path('app_delete_submission') }}"><i class="uil-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <nav aria-label="page_nav" class="d-flex justify-content-center">
+                <ul class="pagination d-inline-flex justify-content-between">
+                    {% if currentPage > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('customer_support' , {'page':currentPage - 1})}}">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% if totalPages != 0 %}
+                        {% for i in range(1,totalPages,1) %}
+                            <li class="page-item {% if currentPage == i %}active{% endif %}">
+                                <a class="page-link" href="{{ path('customer_support' , {'page':i})}}">{{ i }}</a>
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if currentPage < totalPages %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('customer_support' , {'page':currentPage + 1})}}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    {% for row in contactForms %}
+        <div id="submissionDetailsModal{{ row.id }}" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Submission Details</h4>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col att">
+                                <p><b>Submission ID</b></p>
+                            </div>
+                            <div class="col info">
+                                <p>{{ row.id }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col att">
+                                <p><b>Submitted at</b></p>
+                            </div>
+                            <div class="col info">
+                                <p>{{ row.date|date('Y-m-d') }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col att">
+                                <p><b>Name</b></p>
+                            </div>
+                            <div class="col info">
+                                <p>{{ row.name }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col att">
+                                <p><b>Subject</b></p>
+                            </div>
+                            <div class="col info">
+                                <p>{{ row.subject }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col att">
+                                <p style="text-align:center"><b>Message</b></p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col message">
+                                <p>{{ row.message }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all checkboxes when the select all checkbox is checked
+            const selectAllCheckbox = document.getElementById("selectAll");
+            const checkboxess = document.querySelectorAll(
+                'table tbody input[type="checkbox"]'
+            );
+
+            selectAllCheckbox.addEventListener("click", function () {
+                checkboxess.forEach(function (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+
+            checkboxess.forEach(function (checkbox) {
+                checkbox.addEventListener("click", function () {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                });
+            });
+
+            // shows the delete button when at least one checkbox is checked
+            var checkboxes = document.querySelectorAll(".custom-checkbox");
+            var deleteAllSelectedButton = document.querySelector(
+                ".deleteAllSelectedButton"
+            );
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    var atLeastOneChecked = false;
+                    checkboxes.forEach(function (chk) {
+                        if (chk.checked) {
+                            atLeastOneChecked = true;
+                        }
+                    });
+                    if (atLeastOneChecked) {
+                        deleteAllSelectedButton.classList.add("showDeleteAllSelectedButton");
+                    } else {
+                        deleteAllSelectedButton.classList.remove("showDeleteAllSelectedButton");
+                    }
+                });
+            });
+
+            // Delete button for each submission
+            var deleteButtons = document.querySelectorAll(".delete");
+            deleteButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var submissionId = this.getAttribute("data-id");
+                    console.log(this.getAttribute("data-page"));
+                    var confirmation = confirm(
+                        "Are you sure you want to delete this submission?"
+                    );
+                    if (confirmation) {
+                        // Redirect to DeleteSubmissionController.php with submission ID
+                        window.location.href =
+                            this.getAttribute("data-path")+"?id="+ submissionId+"&page="+this.getAttribute("data-page");
+                    }
+                });
+            });
+
+            // Delete button for all selected submissions
+
+            deleteAllSelectedButton.addEventListener("click", function () {
+                const selectedCheckboxes = document.querySelectorAll(
+                    ".custom-checkbox:checked:not(#selectAll)"
+                );
+                const selectedSubmissionIds = Array.from(selectedCheckboxes).map(function (
+                    checkbox
+                ) {
+                    return checkbox.getAttribute("data-id");
+                });
+                const confirmation = confirm(
+                    "Are you sure you want to delete the selected submissions?"
+                );
+                if (confirmation) {
+                    // Redirect to DeleteSubmissionController.php with submission IDs
+                    window.location.href =
+                        this.getAttribute("data-path")+"?id=" +
+                        selectedSubmissionIds.join(",")+"&page="+this.getAttribute("data-page");
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+
+

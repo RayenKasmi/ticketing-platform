@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use App\Traits\TimeTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EventsRepository::class)]
 
@@ -40,18 +41,24 @@ class Events
     private ?string $organizer = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(0)]
     private ?int $totalTickets = null;
 
     #[ORM\Column]
+    #[Assert\LessThanOrEqual(propertyPath: 'totalTickets')]
+    #[Assert\GreaterThan(0)]
     private ?int $availableTickets = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $startSellTime = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan(propertyPath: 'startSellTime')]
     private ?\DateTimeInterface $eventDate = null;
 
     #[ORM\Column]
+    #[Assert\GreaterThan(0)]
     private ?int $ticketPrice = null;
 
     #[ORM\Column(length: 255)]
@@ -287,4 +294,11 @@ class Events
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 }
+
+
