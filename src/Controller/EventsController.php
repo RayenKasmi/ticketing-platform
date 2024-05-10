@@ -4,14 +4,11 @@ namespace App\Controller;
 
 use App\Entity\Events;
 use App\Form\EventsFormType;
-use App\Repository\EventsRepository;
-use App\Repository\UserRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -36,7 +33,7 @@ class EventsController extends AbstractController
 
     #[IsGranted('ROLE_USER')]
     #[Route('/{page<\d+>?1}', name: 'app_admin_events')]
-    public function indexAlls(ManagerRegistry $doctrine, EventsRepository $eventsRepository, $page, SessionInterface $session): Response
+    public function indexAlls(ManagerRegistry $doctrine, $page): Response
     {
         $repository = $doctrine->getRepository(Events::class);
         $nbEvents = $repository->count([]);
@@ -108,8 +105,7 @@ class EventsController extends AbstractController
             return $this->redirectToRoute('app_admin_events', ['page' => 1]);
         }
         return $this->render('events/edit-event.html.twig', [
-            'controller_name' => 'EventsController',
-            'form' => $form->createView(),
+            'form' => $form,
         ]);
     }
 

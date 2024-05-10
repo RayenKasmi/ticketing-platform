@@ -3,8 +3,8 @@
 {% block title %} {{ event.name }} {% endblock %}
 
 {% block body %}
-    <br>
-    <br>
+    <div style="margin-top: 20vh;"></div>
+
     <div class="container-fluid py-5 mt-5">
         <div class="container py-5">
             <div class="row g-4 mb-5">
@@ -37,32 +37,23 @@
                                 {{ event.shortDescription }}
                             </p>
                             {% if reservationId is defined and not null %}
-                                <a href="/payment?reservation_id={{ reservationId }}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                <a href="/payment/{{ reservationId }}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
                                     <i class="fa fa-credit-card me-2 text-primary"></i> Proceed to Payment
                                 </a>
                             {% else %}
                                 {% set canBuyTickets = event.availableTickets > 0 and event.startSellTime|date('U') <= "now"|date('U') %}
                                 {% if canBuyTickets %}
-                                    <form id="buyTicketsForm" action="/reserve" method="post">
-                                        <div class="input-group quantity mb-5" style="width: 100px;">
-                                            <div class="input-group-btn">
-                                                <button type="button" id="minusBtn" class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
-                                            <input id="ticketQuantity" name="quantity" type="text" class="form-control form-control-sm text-center border-0" value="1">
-                                            <div class="input-group-btn">
-                                                <button type="button" id="plusBtn" class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: {{ event.availableTickets }}</p>
-                                        <input type="hidden" name="event_id" value="{{ event.id }}">
-                                        <button type="submit" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Buy Tickets
-                                        </button>
-                                    </form>
+                                    {{ form_start(form, {'attr': {'action': path('app_event_reservation', {'id': event.id})}}) }}
+
+                                    {{ form_row(form.quantity) }}
+                                    <p class="fs-4 fw-bold mb-3 text-danger">Remaining Tickets: {{ event.availableTickets }}</p>
+
+                                    {{ form_row(form.submit) }}
+                                    {% for flash_error in app.flashes('error') %}
+                                        <p class="text-danger">{{ flash_error }}</p>
+                                    {% endfor %}
+
+                                    {{ form_end(form) }}
                                 {% else %}
                                     <p class="text-primary fs-5 fw-bold">Stay Tuned For Ticket Sales</p>
                                 {% endif %}

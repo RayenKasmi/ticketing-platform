@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact Form{% endblock %}
+
+{% block body %}
+    <div class="container-fluid page-header py-5 " style="background-color:#293049">
+        <h1 class="text-center text-white display-6">Contact us</h1>
+    </div>
+
+
+    <div class="container-fluid contact py-5">
+        <div class="container py-5">
+            <div class="p-5 bg-light rounded">
+                <div class="row g-4">
+                    {% if app.flashes('error')|length == 0 %}
+                        {% for flash_success in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ flash_success }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% for flash_error in app.flashes('error') %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ flash_error }}
+                        </div>
+                    {% endfor %}
+                    <div class="col-lg-7">
+                        {{ form_start(ContactForm) }}
+                        {{ form_label(ContactForm.name, 'Name', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(ContactForm.name, { 'attr': {'class': 'w-100 form-control border-0 py-3 mb-4', 'placeholder': 'Your Name'} }) }}
+                        {% if ContactForm.name.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                    {% for error in ContactForm.name.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                        {{ form_label(ContactForm.subject, 'Subject', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(ContactForm.subject, { 'attr': {'class': 'w-100 form-control border-0 py-3 mb-4', 'placeholder': 'Enter the Subject'} }) }}
+                        {% if ContactForm.subject.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in ContactForm.subject.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                        {{ form_label(ContactForm.message, 'Message', {'label_attr': {'class': 'font-weight-bold'}}) }}
+                        {{ form_widget(ContactForm.message, { 'attr': {'class': 'w-100 form-control border-0 mb-4', 'rows': 5, 'placeholder': 'Your Message'}, 'label': 'Your Message' }) }}
+                        {% if ContactForm.message.vars.errors|length > 0 %}
+                            <p class="text-danger">
+                                {% for error in ContactForm.message.vars.errors %}
+                                    {{ error.message }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary" type="submit">Submit</button>
+                        {{ form_end(ContactForm) }}
+                    </div>
+
+                    <div class="col-lg-5">
+                        <div class="d-flex p-4 rounded mb-4 bg-white">
+                            <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Address</h4>
+                                <p class="mb-2">676 Centre Urbain Nord BP, Tunis 1080</p>
+                            </div>
+                        </div>
+                        <div class="d-flex p-4 rounded mb-4 bg-white">
+                            <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Mail Us</h4>
+                                <p class="mb-2">tickety@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="d-flex p-4 rounded bg-white">
+                            <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                            <div>
+                                <h4>Telephone</h4>
+                                <p class="mb-2">(+216) 56 354 698</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

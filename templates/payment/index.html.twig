@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Payment{% endblock %}
+
+{% block body %}
+    <div style="margin-top: 20vh;"></div>
+    <div class="container py-5">
+        <div class="text-center mb-3">
+            <h3>Total Price:</h3>
+            <p class="fs-2 text-secondary">${{ total_price | number_format(2) }}</p>
+            <h3>Expires After:</h3>
+            <p class="fs-2 text-danger" id="countdown"></p>
+        </div>
+        <form method="POST" action="{{ path('app_cancel_event_reservation', {'id': reservation_id}) }}" class="text-center mb-5">
+            <input type="hidden" name="reservation_id">
+            <button type="submit" name="cancel" class="btn btn-secondary mb-3 text-white">Cancel</button>
+        </form>
+        {% for flash_error in app.flashes('error') %}
+            <div class="alert alert-danger" role="alert">
+                {{ flash_error }}
+            </div>
+        {% endfor %}
+        <h2>Enter Client Information</h2>
+        <form method="POST" action="{{ path('app_payment', {'id': reservation_id}) }}">
+            {% for i in 1..quantity %}
+                <div style="margin-bottom: 12vh;">
+                    <h4>Client {{ i }}</h4>
+                    <div class="row mb-3">
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="first_names[]" placeholder="First Name" required value="{{ app.session.get('client_information')[reservation_id]['first_names'][i-1] ?? '' }}">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" name="last_names[]" placeholder="Last Name" required value="{{ app.session.get('client_information')[reservation_id]['last_names'][i-1] ?? '' }}">
+                        </div>
+                        <div class="col-sm-4">
+                            <input type="tel" class="form-control" name="phone_numbers[]" placeholder="Phone Number" required value="{{ app.session.get('client_information')[reservation_id]['phone_numbers'][i-1] ?? '' }}">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <hr>
+
+            <h2>Enter Credit Card Information</h2>
+            <div class="row mb-3">
+                <div class="col-sm-6">
+                    <label for="credit_card">Credit Card Number</label>
+                    <input type="text" class="form-control" name="credit_card" id="credit_card" placeholder="Enter Credit Card Number (15/16 digits)" required>
+                </div>
+                <div class="col-sm-3">
+                    <label for="expiration_date">Expiration Date</label>
+                    <input type="text" class="form-control" name="expiration_date" id="expiration_date" placeholder="MM/YY" required>
+                </div>
+                <div class="col-sm-3">
+                    <label for="cvv">CVV</label>
+                    <input type="text" class="form-control" name="cvv" id="cvv" placeholder="CVV" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary text-white">Submit Payment</button>
+        </form>
+    </div>
+    <script>
+        function initializeCountdown() {
+            let expirationTime = new Date("{{ expiration }}").getTime();
+            let countdown = document.querySelector('#countdown');
+
+            let countdownInterval = setInterval(function() {
+                let now = new Date().getTime();
+                let remainingTime = expirationTime - now;
+
+                let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                let text = hours + "h " + minutes + "m " + seconds + "s ";
+
+                countdown.innerHTML = text;
+
+                if (remainingTime < 0) {
+                    clearInterval(countdownInterval);
+                    countdown.innerHTML = "Reservation expired!";
+                }
+            }, 1000);
+        }
+
+        initializeCountdown();
+    </script>
+{% endblock %}

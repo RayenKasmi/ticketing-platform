@@ -60,9 +60,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Notifications::class, mappedBy: 'user')]
     private Collection $notifications;
+
+    /**
+     * @var Collection<int, EventReservation>
+     */
+    #[ORM\OneToMany(targetEntity: EventReservation::class, mappedBy: 'user')]
+    private Collection $eventReservations;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'buyer')]
+    private Collection $tickets;
     public function __construct()
     {
         $this->notifications = new ArrayCollection();
+        $this->eventReservations = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,8 +229,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 
     /**
      * @return Collection<int, EventReservation>
@@ -277,10 +294,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+<<<<<<< HEAD
 
     public function __toString(): string
     {
         return $this->firstname . ' '. $this->lastname;
     }
 >>>>>>> Stashed changes
+=======
+>>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 }

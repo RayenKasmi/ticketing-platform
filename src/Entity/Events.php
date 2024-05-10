@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,11 +42,11 @@ class Events
     private ?int $availableTickets = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $startSellTime = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\GreaterThan(propertyPath: 'startSellTime')]
-    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $eventDate = null;
 
     #[ORM\Column]
@@ -57,6 +59,24 @@ class Events
     #[ORM\ManyToOne(inversedBy: 'events')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Categories $category = null;
+
+    /**
+     * @var Collection<int, EventReservation>
+     */
+    #[ORM\OneToMany(targetEntity: EventReservation::class, mappedBy: 'event')]
+    private Collection $eventReservations;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'event')]
+    private Collection $tickets;
+
+    public function __construct()
+    {
+        $this->eventReservations = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -206,8 +226,11 @@ class Events
 
         return $this;
     }
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 
     /**
      * @return Collection<int, EventReservation>
@@ -268,6 +291,7 @@ class Events
 
         return $this;
     }
+<<<<<<< HEAD
 
     public function __toString(): string
     {
@@ -276,4 +300,6 @@ class Events
 
 
 >>>>>>> Stashed changes
+=======
+>>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 }

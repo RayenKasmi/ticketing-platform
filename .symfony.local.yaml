@@ -1,0 +1,6 @@
+workers:
+  npm_encore_watch:
+    cmd: ['php', 'bin/console', 'messenger:consume', 'scheduler_default']
+
+
+
