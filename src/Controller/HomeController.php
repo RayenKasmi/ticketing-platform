@@ -4,26 +4,40 @@ namespace App\Controller;
 
 use App\Repository\CategoriesRepository;
 use App\Repository\EventsRepository;
+use App\Service\CurrencyConverterService;
+use App\Service\Exception\CurrencyConversionException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
     private EventsRepository $eventRepository;
     private CategoriesRepository $categoryRepository;
-    public function __construct(EventsRepository $eventRepository, CategoriesRepository $categoryRepository)
+    private CurrencyConverterService $currencyConverter;
+    public function __construct(EventsRepository $eventRepository, CategoriesRepository $categoryRepository, CurrencyConverterService $currencyConverterService)
     {
         $this->eventRepository = $eventRepository;
         $this->categoryRepository = $categoryRepository;
+        $this->currencyConverter = $currencyConverterService;
     }
     #[Route('/home', name: 'app_home')]
-    public function index(): Response
+    public function index(SessionInterface $session): Response
     {
         try {
             $events = $this->eventRepository->findAll();
             $categories = $this->categoryRepository->findAll();
+
+
+            $currency = $session->get('currency', 'USD');
+
+            if ($currency !== 'USD') {
+                foreach ($events as $event) {
+                    $event->setTicketPrice($this->currencyConverter->convertPrice($event->getTicketPrice(), $currency));
+                }
+            }
 
             // Initialize eventsByCategory array
             $eventsByCategory = [];

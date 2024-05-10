@@ -21,6 +21,24 @@ class EventsRepository extends ServiceEntityRepository
         parent::__construct($registry, Events::class);
     }
 
+    /**
+     * Find events of the same category as the given event, excluding the current event.
+     *
+     * @param Events $event The current event.
+     * @param int $maxResults Maximum number of results to return.
+     * @return Events[] The events of the same category, excluding the current event.
+     */
+    public function findEventsByCategoryExcludingCurrent(Events $event, int $maxResults): array
+    {
+        return $this->createQueryBuilder('e')
+            ->where('e.category = :category')
+            ->andWhere('e.id != :eventId')
+            ->setParameter('category', $event->getCategory())
+            ->setParameter('eventId', $event->getId())
+            ->setMaxResults($maxResults)
+            ->getQuery()
+            ->getResult();
+    }
     public function searchEvents(string $term): array
     {
         $qb = $this->createQueryBuilder('e');
