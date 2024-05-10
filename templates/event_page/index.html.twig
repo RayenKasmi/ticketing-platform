@@ -36,7 +36,7 @@
                             <p class="mb-4">
                                 {{ event.shortDescription }}
                             </p>
-                            {% if reservationId is defined and not null %}
+                            {% if reservationId is defined and reservationId is not none %}
                                 <a href="/payment/{{ reservationId }}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
                                     <i class="fa fa-credit-card me-2 text-primary"></i> Proceed to Payment
                                 </a>

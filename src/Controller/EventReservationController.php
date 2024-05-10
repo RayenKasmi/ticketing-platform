@@ -83,7 +83,7 @@ class EventReservationController extends AbstractController
         $reservationRepository = $this->entityManager->getRepository(EventReservation::class);
 
         $eventReservation = $reservationRepository->findOneBy([
-            'user' => $userId,
+            'user' => $user,
             'event' => $event,
             'is_expired' => false
         ]);

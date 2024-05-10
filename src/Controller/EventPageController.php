@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\EventReservation;
 use App\Entity\Events;
 use App\Form\EventReservationType;
 use App\Service\CurrencyConverterService;
@@ -45,10 +46,19 @@ class EventPageController extends AbstractController
 
         $form = $this->createForm(EventReservationType::class);
 
+        $reservationId = null;
+
+        $user = $this->getUser();
+        if ($user) {
+            $reservation = $this->entityManager->getRepository(EventReservation::class)->findOneBy(['user' => $user, 'event' => $event, 'is_expired' => false]);
+            $reservationId = $reservation ? $reservation->getId() : null;
+        }
+
         return $this->render('event_page/index.html.twig', [
             'event' => $event,
             'currentCategoryEvents' => $currentCategoryEvents,
             'form' => $form,
+            'reservationId' => $reservationId,
         ]);
     }
 }
