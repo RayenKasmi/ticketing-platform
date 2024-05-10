@@ -40,11 +40,11 @@ class Events
     private ?int $availableTickets = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $startSellTime = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     #[Assert\GreaterThan(propertyPath: 'startSellTime')]
-    #[Assert\GreaterThan('today')]
     private ?\DateTimeInterface $eventDate = null;
 
     #[ORM\Column]
