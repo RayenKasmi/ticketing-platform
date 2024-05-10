@@ -39,7 +39,7 @@ class UpdateExpiredEventsReservationsHandler
 
         $this->entityManager->flush();
 
-        $this->logger->info('UpdateExpiredEventsReservationsHandler executed successfully at ' . date('Y-m-d H:i:s'));
+        $this->logger->info('Scheduled job for expired event reservations executed successfully!');
     }
 
 }
