@@ -226,11 +226,6 @@ class Events
 
         return $this;
     }
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 
     /**
      * @return Collection<int, EventReservation>
@@ -291,15 +286,11 @@ class Events
 
         return $this;
     }
-<<<<<<< HEAD
 
     public function __toString(): string
     {
         return $this->name;
     }
-
-
->>>>>>> Stashed changes
-=======
->>>>>>> 98f7ba1a2ee974e2332ff90970bb28f5e9e30811
 }
+
+
