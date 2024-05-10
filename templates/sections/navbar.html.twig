@@ -28,7 +28,7 @@
                     <a href="#" class="nav-item nav-link">Dashboard</a>
                     <a href="#" class="nav-item nav-link">Customer Support</a>
                 {% endif %}
-                <form id="currencyForm" method="post" action="#" class="me-3 d-inline-block">
+                <form id="currencyForm" method="post" action="/currency-conversion" class="me-3 d-inline-block">
                     <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
                         {% if not app.session.get('currency') %}
                             {% set defaultCurrency = 'USD' %}
@@ -59,7 +59,6 @@
 </div>
 <script>
     function submitCurrencyForm(event){
-        event.preventDefault();
         document.querySelector('#currencyForm').submit();
     }
 </script>
