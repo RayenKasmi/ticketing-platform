@@ -32,20 +32,14 @@ class EventPageController extends AbstractController
 
 
         // Fetch up to N events from the same category of the current event
-        $currentCategoryEvents = $this->entityManager->getRepository(Events::class)->createQueryBuilder('e')
-            ->where('e.category = :category and e.id != :id')
-            ->setParameter('category', $event->getCategory())
-            ->setParameter('id', $event->getId())
-            ->setMaxResults($this->MAX_QUERY_RESULT)
-            ->getQuery()
-            ->getResult();
+        $currentCategoryEvents = $this->entityManager->getRepository(Events::class)->findEventsByCategoryExcludingCurrent($event, $this->MAX_QUERY_RESULT);
 
         $currency = $session->get('currency', 'USD');
 
         if ($currency !== 'USD') {
             $event->setTicketPrice($this->currencyConverter->convertPrice($event->getTicketPrice(), $currency));
-            foreach ($currentCategoryEvents as $event) {
-                $event->setTicketPrice($this->currencyConverter->convertPrice($event->getTicketPrice(), $currency));
+            foreach ($currentCategoryEvents as $someEvent) {
+                $someEvent->setTicketPrice($this->currencyConverter->convertPrice($someEvent->getTicketPrice(), $currency));
             }
         }
 
