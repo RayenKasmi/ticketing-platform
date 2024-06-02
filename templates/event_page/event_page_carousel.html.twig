@@ -3,7 +3,7 @@
     {% for e in currentCategoryEvents %}
         <div class="border border-primary rounded position-relative event-item">
             <div class="event-img">
-                <img src="{{ asset('images/' ~ e.imagePath) }}" class="img-fluid w-100 rounded-top" alt="">
+                <img src="{{ asset('../' ~ e.imagePath) }}" class="img-fluid w-100 rounded-top" alt="">
             </div>
             <div class="text-white bg-primary px-3 py-1 rounded position-absolute" style="top: 10px; right: 10px;"> {{  e.category.name  }} </div>
             <div class="p-4 rounded-bottom">
