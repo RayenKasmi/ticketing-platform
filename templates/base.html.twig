@@ -5,6 +5,16 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+{% set currency = app.session.get('currency', 'USD') %}
+{% set currencySymbol = '' %}
+{% if currency == 'EUR' %}
+    {% set currencySymbol = '€' %}
+{% elseif currency == 'GBP' %}
+    {% set currencySymbol = '£' %}
+{% elseif currency == 'USD' %}
+    {% set currencySymbol = '$' %}
+{% endif %}
+
 
 {% include 'sections/spinner.php' %}
 
@@ -12,7 +22,8 @@
 
 {% include 'sections/modalsearch.html.twig' %}
 
-{% block body %}{% endblock %}
+{% block body %}
+{% endblock %}
 
 {% include 'sections/footer.html.twig' %}
 
@@ -21,3 +32,4 @@
 {% include 'sections/backtotop.php' %}
 
 {% include 'sections/scripts.php' %}
+

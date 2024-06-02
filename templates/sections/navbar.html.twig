@@ -21,15 +21,15 @@
             <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
                 <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white ms-4 me-2" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                 <a href="/home" class="nav-item nav-link">Home</a>
-                <a href="#" class="nav-item nav-link">Contact</a>
+                <a href="/contact-form" class="nav-item nav-link">Contact</a>
                 {% if app.user and 'ROLE_CUSTOMER' in app.user.roles %}
                     <a href="/manage-tickets" class="nav-item nav-link">Manage Tickets</a>
                 {% elseif app.user and 'ROLE_ADMIN' in app.user.roles %}
-                    <a href="#" class="nav-item nav-link">Dashboard</a>
-                    <a href="#" class="nav-item nav-link">Customer Support</a>
+                    <a href="/dashboard" class="nav-item nav-link">Dashboard</a>
+                    <a href="/customer-support" class="nav-item nav-link">Customer Support</a>
                 {% endif %}
-                <form id="currencyForm" method="post" action="#" class="me-3 d-inline-block">
-                    <select class="currency-select" name="currency" id="currency" onchange="submitCurrencyForm()">
+                <form id="currencyForm" method="post" action="/currency-conversion" class="me-3 d-inline-block">
+                    <select class="currency-select form-select" name="currency" id="currency" onchange="submitCurrencyForm()" style="box-shadow: none">
                         {% if not app.session.get('currency') %}
                             {% set defaultCurrency = 'USD' %}
                             {% set _ = app.session.set('currency', defaultCurrency) %}
@@ -62,7 +62,6 @@
 </div>
 <script>
     function submitCurrencyForm(event){
-        event.preventDefault();
         document.querySelector('#currencyForm').submit();
     }
 </script>

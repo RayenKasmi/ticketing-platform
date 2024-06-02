@@ -13,7 +13,7 @@
                         <div class="col-lg-6">
                             <div class="border rounded">
                                 <a href="#">
-                                    <img src="{{ asset('images/' ~ event.imagePath)  }}" class="img-fluid rounded" alt="Image">
+                                    <img src="{{ asset('uploads/images/' ~ event.imagePath)  }}" class="img-fluid rounded" alt="Image">
                                 </a>
                             </div>
                         </div>
@@ -31,12 +31,12 @@
                                 {{ event.eventDate|date('m/d/Y') }}
                             </p>
                             <p class="fs-3 fw-bold mb-3 text-primary">
-                                {{ '$' ~ (event.ticketPrice / 100) }}
+                                {{ currencySymbol ~ (event.ticketPrice / 100) }}
                             </p>
                             <p class="mb-4">
                                 {{ event.shortDescription }}
                             </p>
-                            {% if reservationId is defined and not null %}
+                            {% if reservationId is defined and reservationId is not none %}
                                 <a href="/payment/{{ reservationId }}" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
                                     <i class="fa fa-credit-card me-2 text-primary"></i> Proceed to Payment
                                 </a>

@@ -1,0 +1,149 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EventsController!{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="container py-5">
+            <div class="table-responsive">
+                <div class="table-wrapper">
+                    <div class="table-title">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h2>All Events</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "card-body">
+                        {% for message in app.flashes('info') %}
+                            <div class="alert alert-info">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <a class="btn btn-primary text-white" href="{{ path("edit_event") }}" role="button">Add Event</a>
+                    <div class="row d-flex justify-content-center">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Venue</th>
+                                <th>Category</th>
+                                <th>Date</th>
+                                <th>Short Description</th>
+                                <th>Long Description</th>
+                                <th>Organizer</th>
+                                <th>Start Sell Time</th>
+                                <th>Total Tickets</th>
+                                <th>Available Tickets</th>
+                                <th>Ticket Price</th>
+                                <th>Actions</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for e in events %}
+                                <tr>
+                                    <td>{{ e.id }}</td>
+                                    <td>{{ e.name }}</td>
+                                    <td>{{ e.venue }}</td>
+                                    <td>{{ e.category}}</td>
+                                    <td>{{ e.eventDate | date('d-m-Y') }}</td>
+                                    <td>{{ e.shortDescription }}</td>
+                                    <td>
+                                        <a data-toggle="tooltip" data-title="{{ e.longDescription }}">See Details</a>
+
+                                    </td>
+                                    <td>{{ e.organizer }}</td>
+                                    <td>{{ e.startSellTime | date('d-m-Y') }}</td>
+                                    <td>{{ e.totalTickets }}</td>
+                                    <td>{{ e.availableTickets }}</td>
+                                    <td>{{ e.ticketPrice }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Edit and Delete buttons">
+                                            <a class="btn btn-primary btn-sm text-white" href="{{ path("edit_event", { id: e.id }) }}" role="button">Edit</a>
+                                            <a href="{{ path("delete_event", { id: e.id }) }}" class="btn btn-danger btn-sm text-white" onclick="return confirm('Are you sure to delete this event?')">Delete</a>
+                                            <a href="{{ path("app_event_page", {id: e.id}) }}" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye me-1 text-white"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav aria-label="page_nav" class="d-flex justify-content-center">
+                        <ul class="pagination d-inline-flex justify-content-between">
+                            {% if currentPage > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ path('app_admin_events' , {'page':currentPage - 1})}}">Previous</a>
+                                </li>
+                            {% endif %}
+                            {% if totalPages != 0 %}
+                                {% for i in range(1,totalPages,1) %}
+                                    <li class="page-item {% if currentPage == i %}active{% endif %}">
+                                        <a class="page-link" href="{{ path('app_admin_events' , {'page':i})}}">{{ i }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endif %}
+                            {% if currentPage < totalPages %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ path('app_admin_events' , {'page':currentPage + 1})}}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip({
+                trigger: 'hover'
+            });
+        });
+    </script>
+
+    <style>
+        [data-title]:hover:after {
+            opacity: 1;
+            transition: all 0.1s ease 0.5s;
+            visibility: visible;
+        }
+        [data-title]:after {
+            content: attr(data-title);
+            background-color: #FFFFFF;
+            color: #111;
+            font-size: 80%;
+            position: absolute;
+            padding: 5px;
+            border-radius: 5px;
+            bottom: -1.6em;
+            left: 100%;
+            white-space: nowrap;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            z-index: 99999;
+            visibility: hidden;
+        }
+        [data-title] {
+            position: relative;
+        }
+    </style>
+{% endblock %}

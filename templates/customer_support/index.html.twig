@@ -12,7 +12,7 @@
                                 <h2>Contact Form Submissions</h2>
                             </div>
                             <div class="col-sm-6">
-                                <a href="#" class="btn btn-danger deleteAllSelectedButton">
+                                <a href="#" class="btn btn-danger deleteAllSelectedButton" data-page="{{ currentPage }}" data-path="{{ path('app_delete_submission') }}">
                                     <i class="uil-trash"></i>
                                     <span>Delete</span>
                                 </a>
@@ -56,7 +56,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="#" class="delete" data-id="{{ row.id }}"><i class="uil-trash"></i></a>
+                                    <a href="#" class="delete" data-id="{{ row.id }}" data-page="{{ currentPage }}" data-path="{{ path('app_delete_submission') }}"><i class="uil-trash"></i></a>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -68,19 +68,19 @@
                 <ul class="pagination d-inline-flex justify-content-between">
                     {% if currentPage > 1 %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ currentPage - 1 }}">Previous</a>
+                            <a class="page-link" href="{{ path('customer_support' , {'page':currentPage - 1})}}">Previous</a>
                         </li>
                     {% endif %}
                     {% if totalPages != 0 %}
                         {% for i in range(1,totalPages,1) %}
                             <li class="page-item {% if currentPage == i %}active{% endif %}">
-                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                                <a class="page-link" href="{{ path('customer_support' , {'page':i})}}">{{ i }}</a>
                             </li>
                         {% endfor %}
                     {% endif %}
                     {% if currentPage < totalPages %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ currentPage + 1 }}">Next</a>
+                            <a class="page-link" href="{{ path('customer_support' , {'page':currentPage + 1})}}">Next</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -143,7 +143,91 @@
             </div>
         </div>
     {% endfor %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select all checkboxes when the select all checkbox is checked
+            const selectAllCheckbox = document.getElementById("selectAll");
+            const checkboxess = document.querySelectorAll(
+                'table tbody input[type="checkbox"]'
+            );
 
+            selectAllCheckbox.addEventListener("click", function () {
+                checkboxess.forEach(function (checkbox) {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+            });
+
+            checkboxess.forEach(function (checkbox) {
+                checkbox.addEventListener("click", function () {
+                    if (!this.checked) {
+                        selectAllCheckbox.checked = false;
+                    }
+                });
+            });
+
+            // shows the delete button when at least one checkbox is checked
+            var checkboxes = document.querySelectorAll(".custom-checkbox");
+            var deleteAllSelectedButton = document.querySelector(
+                ".deleteAllSelectedButton"
+            );
+
+            checkboxes.forEach(function (checkbox) {
+                checkbox.addEventListener("change", function () {
+                    var atLeastOneChecked = false;
+                    checkboxes.forEach(function (chk) {
+                        if (chk.checked) {
+                            atLeastOneChecked = true;
+                        }
+                    });
+                    if (atLeastOneChecked) {
+                        deleteAllSelectedButton.classList.add("showDeleteAllSelectedButton");
+                    } else {
+                        deleteAllSelectedButton.classList.remove("showDeleteAllSelectedButton");
+                    }
+                });
+            });
+
+            // Delete button for each submission
+            var deleteButtons = document.querySelectorAll(".delete");
+            deleteButtons.forEach(function (button) {
+                button.addEventListener("click", function () {
+                    var submissionId = this.getAttribute("data-id");
+                    console.log(this.getAttribute("data-page"));
+                    var confirmation = confirm(
+                        "Are you sure you want to delete this submission?"
+                    );
+                    if (confirmation) {
+                        // Redirect to DeleteSubmissionController.php with submission ID
+                        window.location.href =
+                            this.getAttribute("data-path")+"?id="+ submissionId+"&page="+this.getAttribute("data-page");
+                    }
+                });
+            });
+
+            // Delete button for all selected submissions
+
+            deleteAllSelectedButton.addEventListener("click", function () {
+                const selectedCheckboxes = document.querySelectorAll(
+                    ".custom-checkbox:checked:not(#selectAll)"
+                );
+                const selectedSubmissionIds = Array.from(selectedCheckboxes).map(function (
+                    checkbox
+                ) {
+                    return checkbox.getAttribute("data-id");
+                });
+                const confirmation = confirm(
+                    "Are you sure you want to delete the selected submissions?"
+                );
+                if (confirmation) {
+                    // Redirect to DeleteSubmissionController.php with submission IDs
+                    window.location.href =
+                        this.getAttribute("data-path")+"?id=" +
+                        selectedSubmissionIds.join(",")+"&page="+this.getAttribute("data-page");
+                }
+            });
+        });
+    </script>
 {% endblock %}
+
 
 

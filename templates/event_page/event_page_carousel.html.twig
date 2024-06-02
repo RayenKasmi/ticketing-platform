@@ -11,7 +11,7 @@
                 <p class="text-dark fs-6 fw-bold mb-2"> {{ e.eventDate|date('m/d/Y') }}</p>
                 <p>{{ e.shortDescription }}</p>
                 <div class="d-flex justify-content-between flex-lg-wrap">
-                    <p class="text-dark fs-5 fw-bold mb-0">${{ e.ticketPrice / 100 }}</p>
+                    <p class="text-dark fs-5 fw-bold mb-0">{{ currencySymbol ~ e.ticketPrice / 100 }}</p>
                     <a href="/event/{{ e.id }}" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-eye me-2 text-primary"></i> View Event</a>
                 </div>
             </div>
